@@ -1,5 +1,5 @@
 {
-  "name": "10-vue-router-prep",
+  "name": "vue-to-do",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -8,13 +8,20 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "vue": "^3.2.22",
-    "vue-router": "^4.0.3",
+    "vue": "^3.0.0",
+    "vue-router": "^4.0.12",
     "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
-    "@vue/compiler-sfc": "^3.2.22"
-  }
+    "@vue/compiler-sfc": "^3.0.0",
+    "sass": "^1.43.4",
+    "sass-loader": "^10.2.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
 }
