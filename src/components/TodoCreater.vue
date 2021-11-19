@@ -2,11 +2,15 @@
   <section class="todo-create">
     <div class="container">
       <div class="card">
-        <form class="form-control todo-create__form" @submit.pr.prevent="createTodo(todoTitle)">
+        <form class="form-control todo-create__form" @submit.pr.prevent.keypress.enter="addNewTodo">
           <label>
-            Add Todo Title
+            <span class="todo-create__form-text">Add new todo title</span>
             <input v-model="todoTitle" class="todo-create__input" type="text" id="title">
           </label>
+          <div class="todo-create__form-back" @click="$router.push('/home')">
+            <i class="fas fa-long-arrow-alt-left"></i>
+            <span>Home</span>
+          </div>
           <button class="btn">Add to list</button>
         </form>
       </div>
@@ -25,7 +29,12 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('todos', ['createTodo'])
+    ...mapMutations('todos', ['createTodo']),
+    addNewTodo() {
+      if (this.todoTitle !== '') {
+        this.createTodo(this.todoTitle)
+      }
+    }
   }
 }
 </script>
@@ -38,6 +47,31 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+    position: relative;
+
+    &-text {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    &-back {
+      position: absolute;
+      cursor: pointer;
+      color: #3eaf7c;
+      width: 100px;
+      height: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      top: 0;
+      right: 20px;
+
+      span {
+        padding-left: 15px;
+      }
+    }
 
     label {
       width: 100%;

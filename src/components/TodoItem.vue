@@ -17,40 +17,41 @@
         </li>
         <li class="todo-wrapper__list-item">
           <button class="todo-wrapper__list-button" title="delete-todo">
-            <i class="fas fa-trash primary" @click="deleteTodo(id)"></i>
+            <i class="fas fa-trash primary" @click="$emit('delete', id)"></i>
           </button>
         </li>
       </ul>
     </nav>
     <h2 class="todo__title"> {{ title }}</h2>
     <div v-if="text" class="todo-wrapper__todos">
-      <p v-for="item in text" class="card todo-wrapper__todo-text">
+      <p v-for="item in text" class="card todo-wrapper__todo-text" :key="item.id">
         <input
-            v-model="mark"
+            @change="markTodo({
+            todoId: id,
+            messageId:item.id
+            })"
+            :checked="item.isDone"
             type="checkbox"
             name="mark"
             class="todo-wrapper__checker"
         >
-        {{ item }}
+        {{ item.message }}
       </p>
     </div>
   </div>
 </template>
 
 <script>
-import {mapMutations} from 'vuex';
+import {mapMutations} from 'vuex'
 
 export default {
   name: "TodoItem",
   props: ['title', 'text', 'pageClass', 'id'],
   data() {
-    return {
-      mark: []
-    }
+    return {}
   },
-
   methods: {
-    ...mapMutations('todos', ['deleteTodo'])
+    ...mapMutations('todos', ['markTodo'])
   }
 }
 </script>

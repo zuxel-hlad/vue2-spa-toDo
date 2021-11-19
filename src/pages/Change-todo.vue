@@ -2,13 +2,13 @@
   <section class="change">
     <div class="container">
       <div class="card">
+        <router-link tag="button" to="/home" class="btn change__btn">Home</router-link>
         <TodoItem
             :id="setData.id"
             :title="setData.title"
             :text="setData.list"
         />
       </div>
-      <button @click="show">qwqwqw</button>
     </div>
   </section>
 </template>
@@ -26,17 +26,17 @@ export default {
       return this.allTodos.find(item => item.id === +this.$route.params.todoId)
     }
   },
-  methods: {
-    show() {
-      console.log(this.setData)
-    }
-  },
   components: {
     TodoItem
   }
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+.change {
+  &__btn {
+    margin: 0 0 0 auto;
+    display: block;
+  }
+}
 </style>
