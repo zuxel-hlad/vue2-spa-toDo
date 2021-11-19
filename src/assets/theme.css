@@ -107,6 +107,10 @@ h3 {
   color: #fff;
 }
 
+i.primary {
+  color: #42b983;;
+}
+
 .btn.danger {
   background: #e53935;
   color: #fff;
