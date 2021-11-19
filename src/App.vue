@@ -1,18 +1,17 @@
 <template>
   <div class="container">
     <router-view></router-view>
-  </div>
+  </main>
 </template>
 
 <script>
 
 
 export default {
-  data() {
-    return {}
-  }
+  name: 'App',
 }
 </script>
 
-<style>
+<style lang="scss">
+
 </style>
