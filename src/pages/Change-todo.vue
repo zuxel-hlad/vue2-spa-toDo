@@ -16,17 +16,18 @@
 <script>
 import TodoItem from "../components/TodoItem";
 import {mapGetters} from 'vuex';
+
 export default {
   name: "Change-todo",
-  props:['todoId'],
-  computed:{
-    ...mapGetters('todos',['allTodos']),
-    setData(){
-      return this.allTodos.find(item=> item.id === +this.$route.params.todoId)
+  props: ['todoId'],
+  computed: {
+    ...mapGetters('todos', ['allTodos']),
+    setData() {
+      return this.allTodos.find(item => item.id === +this.$route.params.todoId)
     }
   },
-  methods:{
-    show(){
+  methods: {
+    show() {
       console.log(this.setData)
     }
   },

@@ -7,7 +7,7 @@
       <ul class="todo-wrapper__nav-list">
         <li class="todo-wrapper__list-item">
           <button v-if="$route.path === '/change'" class="todo-wrapper__list-button" title="change-todo">
-              <i class="fas fa-edit primary"></i>
+            <i class="fas fa-edit primary"></i>
           </button>
           <button v-else class="todo-wrapper__list-button" title="change-todo">
             <router-link :to="'/change/' + id">
