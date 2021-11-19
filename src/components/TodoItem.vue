@@ -6,8 +6,11 @@
     <nav class="todo-wrapper__nav">
       <ul class="todo-wrapper__nav-list">
         <li class="todo-wrapper__list-item">
-          <button class="todo-wrapper__list-button" title="change-todo">
-            <router-link to="/change">
+          <button v-if="$route.path === '/change'" class="todo-wrapper__list-button" title="change-todo">
+              <i class="fas fa-edit primary"></i>
+          </button>
+          <button v-else class="todo-wrapper__list-button" title="change-todo">
+            <router-link :to="'/change/' + id">
               <i class="fas fa-edit primary"></i>
             </router-link>
           </button>
@@ -20,11 +23,12 @@
       </ul>
     </nav>
     <h2 class="todo__title"> {{ title }}</h2>
-    <div v-if="text.length" class="todo-wrapper__todos">
+    <div v-if="text" class="todo-wrapper__todos">
       <p v-for="item in text" class="card todo-wrapper__todo-text">
         <input
             v-model="mark"
             type="checkbox"
+            name="mark"
             class="todo-wrapper__checker"
         >
         {{ item }}

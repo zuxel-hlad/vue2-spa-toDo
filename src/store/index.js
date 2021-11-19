@@ -1,8 +1,12 @@
-import {createStore} from 'vuex'
+import Vue from 'vue'
+import Vuex from 'vuex'
 import todos from './modules/todo'
 
-export default createStore({
-    modules: {
-        todos
-    },
+Vue.use(Vuex)
+
+export default new Vuex.Store({
+
+  modules: {
+    todos
+  }
 })

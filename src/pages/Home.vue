@@ -4,7 +4,11 @@
       <div class="card todo-wrapper">
         <div class="todo-wrapper__header">
           <h1 class="home__title">Todo List</h1>
-          <button class="btn">Add new</button>
+          <button class="btn" @click="$router.push({
+          path: '/create'
+          })">
+            Add new
+          </button>
         </div>
         <TodoItem
             v-for="todo in allTodos"
@@ -26,8 +30,7 @@ import {mapGetters} from 'vuex';
 export default {
   name: "Home",
   data() {
-    return {
-    }
+    return {}
   },
   components: {
     TodoItem
