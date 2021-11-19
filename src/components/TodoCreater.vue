@@ -2,7 +2,7 @@
   <section class="todo-create">
     <div class="container">
       <div class="card">
-        <form class="form-control todo-create__form" @submit.pr.prevent="createTodo(todoTitle)">
+        <form class="form-control todo-create__form" @submit.pr.prevent.keypress.enter="createTodo(todoTitle)">
           <label>
             Add Todo Title
             <input v-model="todoTitle" class="todo-create__input" type="text" id="title">

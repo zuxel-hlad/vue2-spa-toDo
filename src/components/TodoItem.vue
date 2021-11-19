@@ -17,7 +17,7 @@
         </li>
         <li class="todo-wrapper__list-item">
           <button class="todo-wrapper__list-button" title="delete-todo">
-            <i class="fas fa-trash primary" @click="deleteTodo(id)"></i>
+            <i class="fas fa-trash primary" @click="$emit('delete', id)"></i>
           </button>
         </li>
       </ul>
@@ -38,7 +38,6 @@
 </template>
 
 <script>
-import {mapMutations} from 'vuex';
 
 export default {
   name: "TodoItem",
@@ -48,10 +47,6 @@ export default {
       mark: []
     }
   },
-
-  methods: {
-    ...mapMutations('todos', ['deleteTodo'])
-  }
 }
 </script>
 

@@ -236,16 +236,25 @@ i.primary {
 .alert.primary {
   border-color: #42b983;
   background-color: #f8f8f8;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .alert.danger {
   border-color: #e53935;
   background-color: #f8f8f8;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .alert.warning {
   border-color: #c25205;
   background-color: #f8f8f8;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .alert p {

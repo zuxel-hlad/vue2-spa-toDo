@@ -8,7 +8,6 @@
             :text="setData.list"
         />
       </div>
-      <button @click="show">qwqwqw</button>
     </div>
   </section>
 </template>
@@ -24,11 +23,6 @@ export default {
     ...mapGetters('todos', ['allTodos']),
     setData() {
       return this.allTodos.find(item => item.id === +this.$route.params.todoId)
-    }
-  },
-  methods: {
-    show() {
-      console.log(this.setData)
     }
   },
   components: {

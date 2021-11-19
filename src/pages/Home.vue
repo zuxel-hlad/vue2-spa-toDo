@@ -1,5 +1,11 @@
 <template>
-  <section class="home">
+  <section class="home" ref="top">
+    <AppAlert
+        type="danger"
+        message="Delete this todo?"
+        ref="deleteAlert"
+        @action="confirmDeleteTodo"
+    />
     <div class="container">
       <div class="card todo-wrapper">
         <div class="todo-wrapper__header">
@@ -17,6 +23,7 @@
             :key="todo.id"
             :id="todo.id"
             page-class="home-page"
+            @delete="removeTodo"
         />
       </div>
     </div>
@@ -25,18 +32,47 @@
 
 <script>
 import TodoItem from "../components/TodoItem";
-import {mapGetters} from 'vuex';
+import AppAlert from "../components/AppAlert";
+import {mapGetters, mapMutations} from 'vuex';
 
 export default {
   name: "Home",
   data() {
-    return {}
+    return {
+      todoId: null
+    }
   },
-  components: {
-    TodoItem
+  methods: {
+    //scroll to ref
+    goTo(refName) {
+      let element = this.$refs[refName]
+      console.log(element)
+      element.scrollIntoView({
+        behavior: 'smooth',
+        alignToTop: true
+      })
+    },
+    ...mapMutations('todos', ['deleteTodo']),
+
+    //remove current todo
+    removeTodo(data) {
+      this.$refs.deleteAlert.openAlert()
+      this.goTo('top')
+      this.todoId = data
+    },
+
+    //confirm remove current todo
+    confirmDeleteTodo() {
+      this.deleteTodo(this.todoId)
+      this.$refs.deleteAlert.hideAlert()
+    },
   },
   computed: {
     ...mapGetters('todos', ['allTodos'])
+  },
+  components: {
+    TodoItem,
+    AppAlert
   },
 }
 </script>
@@ -44,6 +80,7 @@ export default {
 <style scoped lang="scss">
 .home {
   min-height: 100vh;
+  padding: 10px 0 0 0;
 
   &__title {
     text-align: center;
