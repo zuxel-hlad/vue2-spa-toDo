@@ -1,17 +1,45 @@
 import router from '../../router';
-// initial state items
+import store from '../index';
+
+// initial state items example
 const todos = [
     {
         title: 'By cat',
-        list: ['example-1', 'example-2', 'example-3'],
+        list: [
+            {
+                message: 'example-1',
+                isDone: false,
+                id: 1
+            }, {
+                message: 'example-2',
+                isDone: false,
+                id: 2
+            }, {
+                message: 'example-3',
+                isDone: false,
+                id: 3
+            },
+        ],
         id: 1,
-        isDone: false
     },
     {
         title: 'By car',
-        list: ['example-4', 'example-5', 'example-6'],
+        list: [
+            {
+                message: 'example-3',
+                isDone: false,
+                id: 1
+            }, {
+                message: 'example-4',
+                isDone: false,
+                id: 2
+            }, {
+                message: 'example-5',
+                isDone: false,
+                id: 3
+            },
+        ],
         id: 2,
-        isDone: false
     }
 ]
 //set items to localStorage
@@ -33,20 +61,28 @@ export default {
     },
     //delete current todo
     mutations: {
+        setStateHandler(state) {
+            localStorage.removeItem('todoItems')
+            localStorage.setItem('todoItems', JSON.stringify(state.todos))
+        },
         deleteTodo(state, payload) {
             const deletedTodo = state.todos.findIndex(item => item.id === payload)
             state.todos.splice(deletedTodo, 1)
-            localStorage.removeItem('todoItems')
-            localStorage.setItem('todoItems', JSON.stringify(state.todos))
+            store.commit('todos/setStateHandler')
         },
         createTodo(state, payload) {
             state.todos.push({
                 title: payload,
                 id: state.todos[state.todos.length - 1].id + 1
             })
-            localStorage.removeItem('todoItems')
-            localStorage.setItem('todoItems', JSON.stringify(state.todos))
+            store.commit('todos/setStateHandler')
             router.push('/home')
+        },
+        markTodo(state, payload) {
+            const currentTodoIdx = state.todos.findIndex(item => item.id === payload.todoId);
+            const currenMessage = state.todos[currentTodoIdx].list.find(item => item.id === payload.messageId)
+            currenMessage.isDone = !currenMessage.isDone
+            store.commit('todos/setStateHandler')
         }
     },
 }

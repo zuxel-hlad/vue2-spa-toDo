@@ -2,6 +2,7 @@
   <section class="change">
     <div class="container">
       <div class="card">
+        <router-link tag="button" to="/home" class="btn change__btn">Home</router-link>
         <TodoItem
             :id="setData.id"
             :title="setData.title"
@@ -31,6 +32,11 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+.change {
+  &__btn {
+    margin: 0 0 0 auto;
+    display: block;
+  }
+}
 </style>
