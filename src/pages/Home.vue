@@ -1,8 +1,7 @@
 <template>
   <section class="home" ref="top">
     <AppAlert
-        type="danger"
-        message="Delete this todo?"
+        :settings="alertSettings"
         ref="deleteAlert"
         @action="confirmDeleteTodo"
     />
@@ -43,7 +42,8 @@ export default {
   name: "Home",
   data() {
     return {
-      todoId: null
+      todoId: null,
+      alertSettings: {}
     }
   },
   methods: {
@@ -60,6 +60,10 @@ export default {
 
     //remove current todo
     removeTodo(data) {
+      this.alertSettings = {
+        type: 'danger',
+        message: 'Remove this todo?'
+      }
       this.$refs.deleteAlert.openAlert()
       this.goTo('top')
       this.todoId = data

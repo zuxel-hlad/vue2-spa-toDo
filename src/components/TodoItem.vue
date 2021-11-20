@@ -12,7 +12,7 @@
           </li>
           <li class="todo-wrapper__list-item">
             <button v-if="$route.path === '/change/'+id" class="todo-wrapper__list-button" title="cancel-change-todo">
-              <i class="fas fa-ban primary"></i>
+              <i class="fas fa-ban primary" @click="$emit('cancel')"></i>
             </button>
           </li>
           <li class="todo-wrapper__list-item">
@@ -22,7 +22,7 @@
               </router-link>
             </button>
             <button v-else class="todo-wrapper__list-button" title="change-todo">
-                <i class="fas fa-edit primary"></i>
+              <i class="fas fa-edit primary"></i>
               sdsds
             </button>
           </li>
@@ -72,7 +72,10 @@
               <i class="fas fa-edit primary"></i>
             </button>
             <button class="todo-wrapper__list-button" title="delete-todo">
-              <i class="fas fa-trash primary"></i>
+              <i class="fas fa-trash primary" @click="removeTodoTask({
+              todoId: id,
+              taskId: item.id
+              })"></i>
             </button>
           </div>
         </div>
@@ -92,10 +95,10 @@ export default {
     return {}
   },
   methods: {
-    ...mapMutations('todos', ['markTodoTask'])
+    ...mapMutations('todos', ['markTodoTask', 'removeTodoTask']),
   },
   components: {
-    TodoTaskCreator
+    TodoTaskCreator,
   }
 }
 </script>

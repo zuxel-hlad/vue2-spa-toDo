@@ -94,12 +94,20 @@ export default {
             // store.commit('todos/setStateHandler')
         },
         addTodoTask(state, payload) {
-            let currentTodoIdx = state.todos.findIndex(item => item.id === payload.todoId);
+            const currentTodoIdx = state.todos.findIndex(item => item.id === payload.todoId);
             state.todos[currentTodoIdx].list.push({
                 message: payload.message,
                 isDone: false,
                 id: state.todos[currentTodoIdx].list.length ? state.todos[state.todos.length - 1].id + 1 : 1
             })
+        },
+        removeTodoTask(state, payload) {
+            const currentTodoIdx = state.todos.findIndex(item => item.id === payload.todoId);
+            const currentTodoTaskIdx = state.todos[currentTodoIdx].list.findIndex(item => item.id === payload.taskId)
+            state.todos[currentTodoIdx].list.splice(currentTodoTaskIdx, 1)
+        },
+        cancelTodoChanging(state) {
+            state.todos = setInitialState()
         }
     },
 }

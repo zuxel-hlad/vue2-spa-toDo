@@ -1,10 +1,9 @@
 <template>
   <section class="change">
     <AppAlert
-        ref="removeTodoAlert"
-        type="danger"
-        message="Remove this todo?"
-        @action="removeTodo"
+        ref="todoAlert"
+        :settings="alertSettings"
+        @action="setAlertActionType"
     />
     <div class="container">
       <div v-if="!+$route.params.todoId" class="card change__empty">
@@ -12,14 +11,12 @@
         <router-link to="/home" tag="button" class="btn">Home</router-link>
       </div>
       <div v-else class="card">
-        <div class="change__nav">
-          <router-link tag="button" to="/home" class="btn change__btn">Home</router-link>
-        </div>
         <TodoItem
             :id="setData.id"
             :title="setData.title"
             :text="setData.list"
-            @delete="$refs.removeTodoAlert.openAlert()"
+            @delete="openRemoveAlert"
+            @cancel="openCancelAlert"
         />
       </div>
     </div>
@@ -34,15 +31,52 @@ import AppAlert from "../components/AppAlert";
 export default {
   name: "Change-todo",
   data() {
-    return {}
+    return {
+      alertSettings: {},
+      actionType: '',
+    }
   },
   methods: {
-    ...mapMutations('todos', ['deleteTodo']),
+    ...mapMutations('todos', ['deleteTodo', 'cancelTodoChanging']),
+    openRemoveAlert() {
+      this.alertSettings = {
+        type: 'danger',
+        message: 'Remove this todo?'
+      }
+      this.actionType = 'removeTodo';
+      this.$refs.todoAlert.openAlert()
+    },
     removeTodo() {
       this.deleteTodo(this.setData.id)
-      this.$refs.removeTodoAlert.hideAlert()
+      this.$refs.todoAlert.hideAlert()
+      this.alertSettings = {};
+      this.actionType = '';
       this.$router.push('/change')
     },
+
+    openCancelAlert() {
+      this.alertSettings = {
+        type: 'warning',
+        message: 'Cancel todo changing?'
+      }
+      this.actionType = 'cancelChanging';
+      this.$refs.todoAlert.openAlert()
+    },
+    cancelChanging() {
+      this.actionType = '';
+      this.$refs.todoAlert.hideAlert()
+      this.$router.push('/home')
+      this.cancelTodoChanging();
+    },
+    setAlertActionType() {
+      if (this.actionType === 'removeTodo') {
+        return this.removeTodo()
+      }
+
+      if (this.actionType === 'cancelChanging') {
+        return this.cancelChanging()
+      }
+    }
   },
   computed: {
     ...mapGetters('todos', ['allTodos']),
@@ -65,11 +99,6 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-  }
-
-  &__nav {
-    display: flex;
-    justify-content: flex-end;
   }
 }
 </style>
