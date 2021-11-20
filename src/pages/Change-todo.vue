@@ -63,6 +63,7 @@ export default {
       this.$refs.todoAlert.openAlert()
     },
     cancelChanging() {
+      this.alertSettings = {};
       this.actionType = '';
       this.$refs.todoAlert.hideAlert()
       this.$router.push('/home')
