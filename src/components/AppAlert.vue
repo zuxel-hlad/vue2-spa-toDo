@@ -15,7 +15,7 @@
         <button
             :class="type"
             class="btn alert__btn"
-            @click="hideAlert"
+            @click.stop="hideAlert"
         >No
         </button>
       </div>

@@ -5,7 +5,7 @@
         <form class="form-control todo-create__form" @submit.pr.prevent.keypress.enter="addNewTodo">
           <label>
             <span class="todo-create__form-text">Add new todo title</span>
-            <input v-model="todoTitle" class="todo-create__input" type="text" id="title">
+            <input v-model="todoTitle" class="todo-create__input" type="text" id="title" ref="createTodoInput">
           </label>
           <div class="todo-create__form-back" @click="$router.push('/home')">
             <i class="fas fa-long-arrow-alt-left"></i>
@@ -35,6 +35,9 @@ export default {
         this.createTodo(this.todoTitle)
       }
     }
+  },
+  mounted() {
+    this.$refs.createTodoInput.focus()
   }
 }
 </script>

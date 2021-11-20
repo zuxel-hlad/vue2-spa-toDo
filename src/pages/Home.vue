@@ -44,9 +44,9 @@ export default {
   },
   methods: {
     //scroll to ref
+
     goTo(refName) {
       let element = this.$refs[refName]
-      console.log(element)
       element.scrollIntoView({
         behavior: 'smooth',
         alignToTop: true

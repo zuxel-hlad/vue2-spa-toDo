@@ -78,11 +78,11 @@ export default {
             store.commit('todos/setStateHandler')
             router.push('/home')
         },
-        markTodo(state, payload) {
+        markTodoTask(state, payload) {
             const currentTodoIdx = state.todos.findIndex(item => item.id === payload.todoId);
             const currenMessage = state.todos[currentTodoIdx].list.find(item => item.id === payload.messageId)
             currenMessage.isDone = !currenMessage.isDone
-            store.commit('todos/setStateHandler')
+            // store.commit('todos/setStateHandler')
         }
     },
 }

@@ -22,7 +22,7 @@ const routes = [
         component: ChangeTodo,
         children: [
             {
-                path: ':todoId',
+                path: ':todoId?',
                 component: TodoItem,
             }
         ]
