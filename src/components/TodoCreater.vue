@@ -33,6 +33,7 @@ export default {
     addNewTodo() {
       if (this.todoTitle !== '') {
         this.createTodo(this.todoTitle)
+        this.$router.push('/home')
       }
     }
   },

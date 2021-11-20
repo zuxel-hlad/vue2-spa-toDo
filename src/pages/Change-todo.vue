@@ -14,10 +14,6 @@
       <div v-else class="card">
         <div class="change__nav">
           <router-link tag="button" to="/home" class="btn change__btn">Home</router-link>
-          <button class="btn change__btn">Save</button>
-          <button class="btn change__btn">Cancel change</button>
-          <button class="btn change__btn">Cancel last change</button>
-          <button class="btn change__btn">Repeat last change</button>
         </div>
         <TodoItem
             :id="setData.id"
@@ -56,7 +52,7 @@ export default {
   },
   components: {
     TodoItem,
-    AppAlert
+    AppAlert,
   }
 }
 </script>
@@ -68,12 +64,12 @@ export default {
   &__empty {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-end;
   }
 
   &__nav {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
   }
 }
 </style>
