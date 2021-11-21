@@ -120,8 +120,8 @@ export default {
         removeTodoTask(state, payload) {
             const currentTodoIdx = state.todos.findIndex(item => item.id === payload.todoId);
             const currentTodoTaskIdx = state.todos[currentTodoIdx].list.findIndex(item => item.id === payload.taskId)
-            state.todos[currentTodoIdx].list.splice(currentTodoTaskIdx, 1)
             store.commit('todos/backupCancelChanges', currentTodoIdx)
+            state.todos[currentTodoIdx].list.splice(currentTodoTaskIdx, 1)
         },
         cancelTodoChanging(state) {
             state.todos = setInitialState()
