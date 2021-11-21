@@ -1,12 +1,25 @@
 <template>
   <section class="change">
+    <AppAlert
+        ref="todoAlert"
+        :settings="alertSettings"
+        @action="setAlertActionType"
+    />
     <div class="container">
-      <div class="card">
-        <router-link tag="button" to="/home" class="btn change__btn">Home</router-link>
+      <div v-if="!+$route.params.todoId" class="card change__empty">
+        <h2>No todos for changing. Select new.</h2>
+        <router-link to="/home" tag="button" class="btn">Home</router-link>
+      </div>
+      <div v-else class="card">
         <TodoItem
             :id="setData.id"
             :title="setData.title"
             :text="setData.list"
+            @delete="openRemoveAlert"
+            @cancel="openCancelAlert"
+            @save="saveChanges"
+            @cancel-last-changes="cancelLastChanges"
+            @repeat-last-changes="repeatLastChanges"
         />
       </div>
     </div>
@@ -15,11 +28,76 @@
 
 <script>
 import TodoItem from "../components/TodoItem";
-import {mapGetters} from 'vuex';
+import {mapGetters, mapMutations} from 'vuex';
+import AppAlert from "../components/AppAlert";
 
 export default {
   name: "Change-todo",
-  props: ['todoId'],
+  data() {
+    return {
+      alertSettings: {},
+      actionType: '',
+    }
+  },
+  methods: {
+    ...mapMutations(
+        'todos',
+        [
+          'deleteTodo',
+          'cancelTodoChanging',
+          'saveTodoChanges',
+          'cancelLastChange',
+          "repeatLastChanges"
+        ]),
+    resetAlertSettings() {
+      this.$refs.todoAlert.hideAlert()
+      this.alertSettings = {};
+      this.actionType = '';
+    },
+    openRemoveAlert() {
+      this.alertSettings = {
+        type: 'danger',
+        message: 'Remove this todo?'
+      }
+      this.actionType = 'removeTodo';
+      this.$refs.todoAlert.openAlert()
+    },
+    removeTodo() {
+      this.deleteTodo(this.setData.id)
+      this.resetAlertSettings()
+      this.$router.push('/change')
+    },
+
+    openCancelAlert() {
+      this.alertSettings = {
+        type: 'warning',
+        message: 'Cancel todo changing?'
+      }
+      this.actionType = 'cancelChanging';
+      this.$refs.todoAlert.openAlert()
+    },
+    cancelChanging() {
+      this.resetAlertSettings()
+      this.$router.push('/home')
+      this.cancelTodoChanging();
+    },
+    saveChanges() {
+      this.saveTodoChanges();
+      this.$router.push('/home')
+    },
+    cancelLastChanges() {
+      this.cancelLastChange()
+    },
+    setAlertActionType() {
+      if (this.actionType === 'removeTodo') {
+        return this.removeTodo()
+      }
+
+      if (this.actionType === 'cancelChanging') {
+        return this.cancelChanging()
+      }
+    }
+  },
   computed: {
     ...mapGetters('todos', ['allTodos']),
     setData() {
@@ -27,16 +105,20 @@ export default {
     }
   },
   components: {
-    TodoItem
+    TodoItem,
+    AppAlert,
   }
 }
 </script>
 
 <style scoped lang="scss">
 .change {
-  &__btn {
-    margin: 0 0 0 auto;
-    display: block;
+  padding: 10px 0 0 0;
+
+  &__empty {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
   }
 }
 </style>

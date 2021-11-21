@@ -1,13 +1,12 @@
 <template>
   <section class="home" ref="top">
     <AppAlert
-        type="danger"
-        message="Delete this todo?"
+        :settings="alertSettings"
         ref="deleteAlert"
         @action="confirmDeleteTodo"
     />
     <div class="container">
-      <div class="card todo-wrapper">
+      <div v-if="allTodos.length" class="card todo-wrapper">
         <div class="todo-wrapper__header">
           <h1 class="home__title">Todo List</h1>
           <button class="btn" @click="$router.push({
@@ -26,6 +25,10 @@
             @delete="removeTodo"
         />
       </div>
+      <div v-else class="card todo-wrapper__empty-todo">
+        <h1 class="todo-wrapper__no-todos">No todos yet. Add one ?</h1>
+        <router-link to="/create" tag="button" class="btn">Create new todo</router-link>
+      </div>
     </div>
   </section>
 </template>
@@ -39,14 +42,15 @@ export default {
   name: "Home",
   data() {
     return {
-      todoId: null
+      todoId: null,
+      alertSettings: {}
     }
   },
   methods: {
     //scroll to ref
+
     goTo(refName) {
       let element = this.$refs[refName]
-      console.log(element)
       element.scrollIntoView({
         behavior: 'smooth',
         alignToTop: true
@@ -56,6 +60,10 @@ export default {
 
     //remove current todo
     removeTodo(data) {
+      this.alertSettings = {
+        type: 'danger',
+        message: 'Remove this todo?'
+      }
       this.$refs.deleteAlert.openAlert()
       this.goTo('top')
       this.todoId = data
@@ -79,7 +87,6 @@ export default {
 
 <style scoped lang="scss">
 .home {
-  min-height: 100vh;
   padding: 10px 0 0 0;
 
   &__title {
@@ -88,9 +95,14 @@ export default {
 
   .todo-wrapper {
     margin-top: 50px;
-    min-height: 100vh;
 
     &__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    &__empty-todo {
       display: flex;
       align-items: center;
       justify-content: space-between;

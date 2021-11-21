@@ -2,20 +2,20 @@
   <div class="container" v-if="dialog">
     <div
         class="alert"
-        :class="type"
+        :class="settings.type"
     >
-      <h1 class="alert__title">{{ message }}</h1>
+      <h1 class="alert__title">{{ settings.message }}</h1>
       <div class="alert__btns">
         <button
-            :class="type"
+            :class="settings.type"
             class="btn alert__btn"
             @click="$emit('action')"
         >Yes
         </button>
         <button
-            :class="type"
+            :class="settings.type"
             class="btn alert__btn"
-            @click="hideAlert"
+            @click.stop="hideAlert"
         >No
         </button>
       </div>
@@ -28,20 +28,9 @@
 export default {
   name: "AppAlert",
   props: {
-    type: {
-      type: String,
-      required: true,
-      default: ''
-    },
-    message: {
-      type: String,
-      required: true,
-      default: ''
-    },
-    todoId: {
-      type: Number,
-      required: false,
-      default: null
+    settings: {
+      type: Object,
+      required: true
     }
   },
   data() {
