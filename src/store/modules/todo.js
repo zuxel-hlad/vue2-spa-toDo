@@ -82,7 +82,7 @@ export default {
         createTodo(state, payload) {
             state.todos.push({
                 title: payload,
-                id: state.todos.length ? state.todos[state.todos.length - 1].id + 1 : 1,
+                id: new Date().getTime(),
                 list: []
             })
             store.commit('todos/setStateHandler')
@@ -91,14 +91,19 @@ export default {
             const currentTodoIdx = state.todos.findIndex(item => item.id === payload.todoId);
             const currenMessage = state.todos[currentTodoIdx].list.find(item => item.id === payload.messageId)
             currenMessage.isDone = !currenMessage.isDone
-            // store.commit('todos/setStateHandler')
+        },
+        changeTodoTaskMessage(state, payload) {
+            console.log(payload)
+            const currentTodoIdx = state.todos.findIndex(item => item.id === payload.todoId);
+            const currenMessage = state.todos[currentTodoIdx].list.find(item => item.id === payload.messageId)
+            currenMessage.message = payload.newMessage
         },
         addTodoTask(state, payload) {
             const currentTodoIdx = state.todos.findIndex(item => item.id === payload.todoId);
             state.todos[currentTodoIdx].list.push({
                 message: payload.message,
                 isDone: false,
-                id: state.todos[currentTodoIdx].list.length ? state.todos[state.todos.length - 1].id + 1 : 1
+                id: new Date().getTime(),
             })
         },
         removeTodoTask(state, payload) {
@@ -108,6 +113,9 @@ export default {
         },
         cancelTodoChanging(state) {
             state.todos = setInitialState()
+        },
+        saveTodoChanges(state) {
+            store.commit('todos/setStateHandler')
         }
     },
 }

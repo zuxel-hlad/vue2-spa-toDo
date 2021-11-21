@@ -7,7 +7,7 @@
     />
     <div class="container">
       <div v-if="!+$route.params.todoId" class="card change__empty">
-        <h2>No todos for changing. Select on please.</h2>
+        <h2>No todos for changing. Select one please.</h2>
         <router-link to="/home" tag="button" class="btn">Home</router-link>
       </div>
       <div v-else class="card">
@@ -17,6 +17,7 @@
             :text="setData.list"
             @delete="openRemoveAlert"
             @cancel="openCancelAlert"
+            @save="saveChanges"
         />
       </div>
     </div>
@@ -37,7 +38,12 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('todos', ['deleteTodo', 'cancelTodoChanging']),
+    ...mapMutations('todos', ['deleteTodo', 'cancelTodoChanging', 'saveTodoChanges']),
+    resetAlertSettings() {
+      this.$refs.todoAlert.hideAlert()
+      this.alertSettings = {};
+      this.actionType = '';
+    },
     openRemoveAlert() {
       this.alertSettings = {
         type: 'danger',
@@ -48,9 +54,7 @@ export default {
     },
     removeTodo() {
       this.deleteTodo(this.setData.id)
-      this.$refs.todoAlert.hideAlert()
-      this.alertSettings = {};
-      this.actionType = '';
+      this.resetAlertSettings()
       this.$router.push('/change')
     },
 
@@ -63,11 +67,13 @@ export default {
       this.$refs.todoAlert.openAlert()
     },
     cancelChanging() {
-      this.alertSettings = {};
-      this.actionType = '';
-      this.$refs.todoAlert.hideAlert()
+      this.resetAlertSettings()
       this.$router.push('/home')
       this.cancelTodoChanging();
+    },
+    saveChanges(){
+      this.saveTodoChanges();
+      this.$router.push('/home')
     },
     setAlertActionType() {
       if (this.actionType === 'removeTodo') {
