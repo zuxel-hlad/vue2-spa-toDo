@@ -33,8 +33,8 @@ const router = new VueRouter({
     mode: 'history',
     base: process.env.BASE_URL,
     routes,
-    scrollBehavior (to, from, savedPosition) {
-        return { x: 0, y: 0,behavior: 'smooth' }
+    scrollBehavior(to, from, savedPosition) {
+        return {x: 0, y: 0, behavior: 'smooth'}
     },
     linkActiveClass: 'active',
     linkExactActiveClass: 'active'

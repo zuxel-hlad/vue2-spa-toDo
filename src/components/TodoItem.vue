@@ -32,12 +32,12 @@
           </li>
           <li class="todo-wrapper__list-item">
             <button v-if="$route.path === '/change/'+id" class="todo-wrapper__list-button" title="cancel-last-changes">
-              <i class="fas fa-redo primary"></i>
+              <i class="fas fa-redo primary" @click="$emit('cancel-last-changes')"></i>
             </button>
           </li>
           <li class="todo-wrapper__list-item">
             <button v-if="$route.path === '/change/'+id" class="todo-wrapper__list-button" title="repeat-last-changes">
-              <i class="fas fa-reply primary"></i>
+              <i class="fas fa-reply primary" @click="$emit('repeat-last-changes')"></i>
             </button>
           </li>
           <li class="todo-wrapper__list-item">
@@ -49,7 +49,6 @@
       </nav>
       <h2 class="todo__title"> {{ title }}</h2>
       <div class="todo-wrapper__todos">
-        <!--        v-for="task in text" :key="task.id"-->
         <TodoTask v-for="task in text" :key="task.id" :task="task" :todoId="id"/>
       </div>
     </div>

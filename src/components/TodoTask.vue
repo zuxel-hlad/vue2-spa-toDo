@@ -55,9 +55,9 @@ export default {
       changeTaskValue: ''
     }
   },
-  methods:{
+  methods: {
     ...mapMutations('todos', ['markTodoTask', 'removeTodoTask', 'changeTodoTaskMessage']),
-    changeTaskToggle(){
+    changeTaskToggle() {
       this.changeTaskFlag = true
     },
     changeTaskMessage(messageId) {
@@ -104,6 +104,7 @@ export default {
     margin: 0 10px 0 0;
     cursor: pointer;
   }
+
   &__list-button {
     padding: 0;
     margin: 0;
@@ -119,6 +120,7 @@ export default {
       padding: 10px;
     }
   }
+
   &__task-change {
     font-size: 16px;
     line-height: 16px;
