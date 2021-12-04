@@ -66,11 +66,11 @@ export default {
         }
     },
     //return array of todos
-    getters: {
-        allTodos(state) {
-            return state.todos
-        }
-    },
+    // getters: {
+    //     allTodos(state) {
+    //         return state.todos
+    //     }
+    // },
 
     mutations: {
         setStateHandler(state) {

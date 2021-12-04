@@ -6,7 +6,7 @@
         @action="confirmDeleteTodo"
     />
     <div class="container">
-      <div v-if="allTodos.length" class="card todo-wrapper">
+      <div v-if="todos.length" class="card todo-wrapper">
         <div class="todo-wrapper__header">
           <h1 class="home__title">Todo List</h1>
           <button class="btn" @click="$router.push({
@@ -16,7 +16,7 @@
           </button>
         </div>
         <TodoItem
-            v-for="todo in allTodos"
+            v-for="todo in todos"
             :title="todo.title"
             :text="todo.list"
             :key="todo.id"
@@ -36,7 +36,7 @@
 <script>
 import TodoItem from "../components/TodoItem";
 import AppAlert from "../components/AppAlert";
-import {mapGetters, mapMutations} from 'vuex';
+import {mapGetters, mapMutations, mapState} from 'vuex';
 
 export default {
   name: "Home",
@@ -76,7 +76,11 @@ export default {
     },
   },
   computed: {
-    ...mapGetters('todos', ['allTodos'])
+    // ...mapGetters('todos', ['allTodos'])
+    // ...mapState('todos',['todos'])
+    ...mapState({
+      todos: state => state.todos.todos
+    })
   },
   components: {
     TodoItem,
