@@ -3,7 +3,7 @@
     <AppAlert
         ref="todoAlert"
         :settings="alertSettings"
-        @action="setAlertActionType"
+        @click="setAlertActionType"
     />
     <div class="container">
       <div v-if="!+$route.params.todoId" class="card change__empty">
@@ -28,7 +28,7 @@
 
 <script>
 import TodoItem from "../components/TodoItem";
-import {mapGetters, mapMutations} from 'vuex';
+import {mapState, mapMutations} from 'vuex';
 import AppAlert from "../components/AppAlert";
 
 export default {
@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     ...mapMutations(
-        'todos',
+        'todosModule',
         [
           'deleteTodo',
           'cancelTodoChanging',
@@ -99,9 +99,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('todos', ['allTodos']),
+    ...mapState('todosModule', ['todos']),
     setData() {
-      return this.allTodos.find(item => item.id === +this.$route.params.todoId)
+      return this.todos.find(item => item.id === +this.$route.params.todoId)
     }
   },
   components: {
@@ -113,7 +113,6 @@ export default {
 
 <style scoped lang="scss">
 .change {
-  padding: 10px 0 0 0;
 
   &__empty {
     display: flex;

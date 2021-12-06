@@ -6,18 +6,16 @@
     >
       <h1 class="alert__title">{{ settings.message }}</h1>
       <div class="alert__btns">
-        <button
-            :class="settings.type"
-            class="btn alert__btn"
-            @click="$emit('action')"
+        <AppButton
+            :customClass="settings.type"
+            @click="$emit('click')"
         >Yes
-        </button>
-        <button
-            :class="settings.type"
-            class="btn alert__btn"
-            @click.stop="hideAlert"
+        </AppButton>
+        <AppButton
+            :customClass="settings.type"
+            @click="hideAlert"
         >No
-        </button>
+        </AppButton>
       </div>
     </div>
   </div>
@@ -31,6 +29,11 @@ export default {
     settings: {
       type: Object,
       required: true
+    },
+    customClass: {
+      type: String,
+      required: false,
+      default: ''
     }
   },
   data() {

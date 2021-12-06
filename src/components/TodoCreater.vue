@@ -11,7 +11,7 @@
             <i class="fas fa-long-arrow-alt-left"></i>
             <span>Home</span>
           </div>
-          <button class="btn">Add to list</button>
+          <AppButton>Add to list</AppButton>
         </form>
       </div>
     </div>
@@ -29,7 +29,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('todos', ['createTodo']),
+    ...mapMutations('todosModule', ['createTodo']),
     addNewTodo() {
       if (this.todoTitle !== '') {
         this.createTodo(this.todoTitle)
@@ -45,7 +45,6 @@ export default {
 
 <style scoped lang="scss">
 .todo-create {
-  min-height: 100vh;
 
   &__form {
     display: flex;

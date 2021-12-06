@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="app">
     <router-view></router-view>
   </div>
 </template>
@@ -13,5 +13,14 @@ export default {
 </script>
 
 <style lang="scss">
+.app {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
 
+section {
+  width: 100%;
+}
 </style>

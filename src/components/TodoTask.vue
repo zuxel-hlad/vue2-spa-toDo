@@ -56,7 +56,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('todos', ['markTodoTask', 'removeTodoTask', 'changeTodoTaskMessage']),
+    ...mapMutations('todosModule', ['markTodoTask', 'removeTodoTask', 'changeTodoTaskMessage']),
     changeTaskToggle() {
       this.changeTaskFlag = true
     },

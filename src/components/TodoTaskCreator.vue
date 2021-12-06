@@ -11,7 +11,7 @@
       <form class="form-control todo-task-creator__form" @submit.prevent="addNewTask">
         <label for="task-message" class="todo-task-creator__form">Enter task message</label>
         <input v-model="taskMessage" type="text" id="task-message" class="todo-task-creator__form-input">
-        <button class="btn todo-task-creator__form-btn">Create</button>
+        <AppButton class="todo-task-creator__form-btn">Create</AppButton>
       </form>
     </div>
   </div>
@@ -30,7 +30,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('todos', ['addTodoTask']),
+    ...mapMutations('todosModule', ['addTodoTask']),
     showModal() {
       this.visible = true
     },
@@ -46,7 +46,7 @@ export default {
         this.taskMessage = ''
         this.hideModal()
       } else {
-        return
+        return false
       }
     }
   }

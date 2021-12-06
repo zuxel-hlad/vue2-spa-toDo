@@ -6,50 +6,84 @@
       <nav class="todo-wrapper__nav">
         <ul class="todo-wrapper__nav-list">
           <li class="todo-wrapper__list-item">
-            <button v-if="$route.path === '/change/'+id" class="todo-wrapper__list-button" title="save-todo">
-              <i class="fas fa-save primary" @click="$emit('save')"></i>
+            <button
+                @click="$emit('save')"
+                v-if="$route.path === '/change/'+id"
+                class="todo-wrapper__list-button"
+                title="save-todo">
+              <i class="fas fa-save primary"></i>
+              <small>Save</small>
             </button>
           </li>
           <li class="todo-wrapper__list-item">
-            <button v-if="$route.path === '/change/'+id" class="todo-wrapper__list-button" title="cancel-change-todo">
-              <i class="fas fa-ban primary" @click="$emit('cancel')"></i>
+            <button
+                @click="$emit('cancel')"
+                v-if="$route.path === '/change/'+id"
+                class="todo-wrapper__list-button"
+                title="cancel-change-todo">
+              <i class="fas fa-ban primary"></i>
+              <small>Cancel change</small>
             </button>
           </li>
           <li class="todo-wrapper__list-item">
-            <router-link
-                tag="button"
-                :to="'/change/'+id"
+            <button
+                @click="$router.push('/change/'+id)"
                 v-if="$route.path === '/' || $route.path === '/home'"
                 class="todo-wrapper__list-button" title="change-todo"
             >
               <i class="fas fa-edit primary"></i>
-            </router-link>
-          </li>
-          <li class="todo-wrapper__list-item">
-            <button class="todo-wrapper__list-button" title="delete-todo">
-              <i class="fas fa-trash primary" @click="$emit('delete', id)"></i>
+              <small>Change</small>
             </button>
           </li>
           <li class="todo-wrapper__list-item">
-            <button v-if="$route.path === '/change/'+id" class="todo-wrapper__list-button" title="cancel-last-changes">
-              <i class="fas fa-redo primary" @click="$emit('cancel-last-changes')"></i>
+            <button
+                @click="$emit('delete', id)"
+                class="todo-wrapper__list-button"
+                title="delete-todo">
+              <i class="fas fa-trash primary"></i>
+              <small>Delete</small>
             </button>
           </li>
           <li class="todo-wrapper__list-item">
-            <button v-if="$route.path === '/change/'+id" class="todo-wrapper__list-button" title="repeat-last-changes">
-              <i class="fas fa-reply primary" @click="$emit('repeat-last-changes')"></i>
+            <button
+                @click="$emit('cancel-last-changes')"
+                v-if="$route.path === '/change/'+id"
+                class="todo-wrapper__list-button"
+                title="cancel-last-changes">
+              <i class="fas fa-redo primary"></i>
+              <small>Cancel last changes</small>
             </button>
           </li>
           <li class="todo-wrapper__list-item">
-            <button v-if="$route.path === '/change/'+id" class="todo-wrapper__list-button" title="add-todo-task">
-              <i class="fas fa-plus-circle primary" @click="$refs.createTodoTaskModal.showModal()"></i>
+            <button
+                @click="$emit('repeat-last-changes')"
+                v-if="$route.path === '/change/'+id"
+                class="todo-wrapper__list-button"
+                title="repeat-last-changes">
+              <i class="fas fa-reply primary"></i>
+              <small>Repeat last changes</small>
+            </button>
+          </li>
+          <li class="todo-wrapper__list-item">
+            <button
+                @click="$refs.createTodoTaskModal.showModal()"
+                v-if="$route.path === '/change/'+id"
+                class="todo-wrapper__list-button"
+                title="add-todo-task">
+              <i class="fas fa-plus-circle primary"></i>
+              <small>Add task</small>
             </button>
           </li>
         </ul>
       </nav>
       <h2 class="todo__title"> {{ title }}</h2>
       <div class="todo-wrapper__todos">
-        <TodoTask v-for="task in text" :key="task.id" :task="task" :todoId="id"/>
+        <TodoTask
+            v-for="task in text"
+            :key="task.id"
+            :task="task"
+            :todoId="id"
+        />
       </div>
     </div>
   </div>
@@ -61,7 +95,7 @@ import TodoTask from "./TodoTask";
 
 export default {
   name: "TodoItem",
-  props: ['title', 'text', 'pageClass', 'id'],
+  props: ['title', 'text', 'id'],
   data() {
     return {}
   },
@@ -90,18 +124,24 @@ export default {
   }
 
   &__list-button {
-    padding: 0;
+    padding: 0 7px;
     margin: 0;
     background: transparent;
     border: none;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     cursor: pointer;
 
     i {
       font-size: 16px;
-      padding: 10px;
+    }
+
+    small {
+      display: block;
+      margin: 5px 0 0 0;
+      font-size: 12px;
     }
   }
 }

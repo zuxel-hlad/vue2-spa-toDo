@@ -65,12 +65,6 @@ export default {
             backupCancelChange: null
         }
     },
-    //return array of todos
-    // getters: {
-    //     allTodos(state) {
-    //         return state.todos
-    //     }
-    // },
 
     mutations: {
         setStateHandler(state) {
@@ -84,9 +78,9 @@ export default {
         },
         deleteTodo(state, payload) {
             const deletedTodo = state.todos.findIndex(item => item.id === payload)
-            store.commit('todos/backupCancelChanges', deletedTodo)
+            store.commit('todosModule/backupCancelChanges', deletedTodo)
             state.todos.splice(deletedTodo, 1)
-            store.commit('todos/setStateHandler')
+            store.commit('todosModule/setStateHandler')
         },
         createTodo(state, payload) {
             state.todos.push({
@@ -94,19 +88,19 @@ export default {
                 id: new Date().getTime(),
                 list: [],
             })
-            store.commit('todos/setStateHandler')
+            store.commit('todosModule/setStateHandler')
         },
         markTodoTask(state, payload) {
             const currentTodoIdx = state.todos.findIndex(item => item.id === payload.todoId);
             const currenMessage = state.todos[currentTodoIdx].list.find(item => item.id === payload.messageId)
             currenMessage.isDone = !currenMessage.isDone
-            store.commit('todos/backupCancelChanges', currentTodoIdx)
+            store.commit('todosModule/backupCancelChanges', currentTodoIdx)
         },
         changeTodoTaskMessage(state, payload) {
             const currentTodoIdx = state.todos.findIndex(item => item.id === payload.todoId);
             const currenMessage = state.todos[currentTodoIdx].list.find(item => item.id === payload.messageId)
             currenMessage.message = payload.newMessage
-            store.commit('todos/backupCancelChanges', currentTodoIdx)
+            store.commit('todosModule/backupCancelChanges', currentTodoIdx)
         },
         addTodoTask(state, payload) {
             const currentTodoIdx = state.todos.findIndex(item => item.id === payload.todoId);
@@ -115,19 +109,19 @@ export default {
                 isDone: false,
                 id: new Date().getTime(),
             })
-            store.commit('todos/backupCancelChanges', currentTodoIdx)
+            store.commit('todosModule/backupCancelChanges', currentTodoIdx)
         },
         removeTodoTask(state, payload) {
             const currentTodoIdx = state.todos.findIndex(item => item.id === payload.todoId);
             const currentTodoTaskIdx = state.todos[currentTodoIdx].list.findIndex(item => item.id === payload.taskId)
-            store.commit('todos/backupCancelChanges', currentTodoIdx)
+            store.commit('todosModule/backupCancelChanges', currentTodoIdx)
             state.todos[currentTodoIdx].list.splice(currentTodoTaskIdx, 1)
         },
         cancelTodoChanging(state) {
             state.todos = setInitialState()
         },
         saveTodoChanges(state) {
-            store.commit('todos/setStateHandler')
+            store.commit('todosModule/setStateHandler')
         },
         cancelLastChange(state) {
             state.todos = setInitialState()
