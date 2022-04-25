@@ -2,12 +2,6 @@
   <div class="card todo-wrapper__todos-todo">
     <div class="todo-wrapper__todos-content">
       <input
-          v-if="$route.path === '/change/'+todoId"
-          @change="markTodoTask({
-            todoId: todoId,
-            messageId:task.id
-            })"
-          :checked="task.isDone"
           type="checkbox"
           name="mark"
           class="todo-wrapper__checker"
@@ -18,25 +12,20 @@
       <p v-else class="todo-wrapper__todo-text">
         <input
             type="text"
-            @input="updateChangeTaskValue"
-            :value="task.message"
             class="todo-wrapper__task-change"
             ref="newMessage"
         >
       </p>
     </div>
-    <div class="todo-wrapper__todos-actions" v-if="$route.path==='/change/' + todoId">
+    <div class="todo-wrapper__todos-actions" v-if="true">
       <button v-if="changeTaskFlag" class="todo-wrapper__list-button">
-        <i class="fas fa-save primary" @click="changeTaskMessage(task.id)"></i>
+        <i class="fas fa-save primary"></i>
       </button>
       <button class="todo-wrapper__list-button">
         <i class="fas fa-edit primary" @click="changeTaskToggle"></i>
       </button>
       <button class="todo-wrapper__list-button" title="delete-todo">
-        <i class="fas fa-trash primary" @click="removeTodoTask({
-              todoId: todoId,
-              taskId: task.id
-              })">
+        <i class="fas fa-trash primary">
         </i>
       </button>
     </div>
@@ -48,7 +37,19 @@ import {mapMutations} from "vuex";
 
 export default {
   name: "TodoTask",
-  props: ['task', 'todoId'],
+  props: {
+    task: {
+      type: Object,
+      default: () => {
+      },
+      required: false
+    },
+    currentTodoID: {
+      type: String,
+      required: true,
+      default: ''
+    }
+  },
   data() {
     return {
       changeTaskFlag: false,
@@ -56,7 +57,10 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('todosModule', ['markTodoTask', 'removeTodoTask', 'changeTodoTaskMessage']),
+    ...mapMutations(
+        'todosModule',
+        ['markTodoTask', 'removeTodoTask', 'changeTodoTaskMessage']
+    ),
     changeTaskToggle() {
       this.changeTaskFlag = true
     },

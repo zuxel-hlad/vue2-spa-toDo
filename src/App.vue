@@ -14,9 +14,10 @@ export default {
 
 <style lang="scss">
 .app {
+  padding-top: 100px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   min-height: 100vh;
 }
 

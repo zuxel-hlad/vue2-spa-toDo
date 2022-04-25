@@ -1,7 +1,6 @@
 <template>
   <button
-      class="btn"
-      :class="customClass"
+      :class="`btn ${customClass}`"
       @click="$emit('click')"
   >
     <slot></slot>

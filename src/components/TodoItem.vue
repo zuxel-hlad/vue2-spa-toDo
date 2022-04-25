@@ -1,88 +1,105 @@
 <template>
   <div class="todo-task-container">
-    <TodoTaskCreator ref="createTodoTaskModal" :todoId="id"/>
     <div
         class="card todo-wrapper__item">
       <nav class="todo-wrapper__nav">
         <ul class="todo-wrapper__nav-list">
-          <li class="todo-wrapper__list-item">
-            <button
+          <li
+              v-if="isSave"
+              class="todo-wrapper__list-item">
+            <app-button
                 @click="$emit('save')"
-                v-if="$route.path === '/change/'+id"
-                class="todo-wrapper__list-button"
+                customClass="todo-wrapper__list-button"
                 title="save-todo">
               <i class="fas fa-save primary"></i>
               <small>Save</small>
-            </button>
+            </app-button>
           </li>
-          <li class="todo-wrapper__list-item">
-            <button
-                @click="$emit('cancel')"
-                v-if="$route.path === '/change/'+id"
-                class="todo-wrapper__list-button"
+          <li
+              v-if="isCancel"
+              class="todo-wrapper__list-item">
+            <app-button
+                @click="$emit('cancel-edit')"
+                customClass="todo-wrapper__list-button"
                 title="cancel-change-todo">
               <i class="fas fa-ban primary"></i>
               <small>Cancel change</small>
-            </button>
+            </app-button>
           </li>
-          <li class="todo-wrapper__list-item">
-            <button
-                @click="$router.push('/change/'+id)"
-                v-if="$route.path === '/' || $route.path === '/home'"
-                class="todo-wrapper__list-button" title="change-todo"
-            >
+          <li
+              v-if="isChange"
+              class="todo-wrapper__list-item">
+            <app-button
+                @click="$emit('change-todo')"
+                customClass="todo-wrapper__list-button" title="change-todo">
               <i class="fas fa-edit primary"></i>
               <small>Change</small>
-            </button>
+            </app-button>
           </li>
-          <li class="todo-wrapper__list-item">
-            <button
-                @click="$emit('delete', id)"
-                class="todo-wrapper__list-button"
+          <li
+              v-if="isDelete"
+              class="todo-wrapper__list-item">
+            <app-button
+                @click="$emit('delete')"
+                customClass="todo-wrapper__list-button"
                 title="delete-todo">
               <i class="fas fa-trash primary"></i>
               <small>Delete</small>
-            </button>
+            </app-button>
           </li>
-          <li class="todo-wrapper__list-item">
-            <button
+          <li
+              v-if="isCancelLastChanges"
+              class="todo-wrapper__list-item">
+            <app-button
                 @click="$emit('cancel-last-changes')"
-                v-if="$route.path === '/change/'+id"
-                class="todo-wrapper__list-button"
+                customClass="todo-wrapper__list-button"
                 title="cancel-last-changes">
               <i class="fas fa-redo primary"></i>
               <small>Cancel last changes</small>
-            </button>
+            </app-button>
           </li>
-          <li class="todo-wrapper__list-item">
-            <button
+          <li
+              v-if="isRepeatLastChanges"
+              class="todo-wrapper__list-item">
+            <app-button
                 @click="$emit('repeat-last-changes')"
-                v-if="$route.path === '/change/'+id"
-                class="todo-wrapper__list-button"
+                customClass="todo-wrapper__list-button"
                 title="repeat-last-changes">
               <i class="fas fa-reply primary"></i>
               <small>Repeat last changes</small>
-            </button>
+            </app-button>
           </li>
-          <li class="todo-wrapper__list-item">
-            <button
-                @click="$refs.createTodoTaskModal.showModal()"
-                v-if="$route.path === '/change/'+id"
-                class="todo-wrapper__list-button"
+          <li
+              v-if="isCreateTask"
+              class="todo-wrapper__list-item">
+            <app-button
+                @click="$emit('create-task')"
+                customClass="todo-wrapper__list-button"
                 title="add-todo-task">
               <i class="fas fa-plus-circle primary"></i>
               <small>Add task</small>
-            </button>
+            </app-button>
+          </li>
+          <li
+              v-if="isCreateNew"
+              class="todo-wrapper__list-item">
+            <app-button
+                @click="$emit('create-new')"
+                customClass="todo-wrapper__list-button"
+                title="add-todo-task">
+              <i class="fas fa-plus-circle primary"></i>
+              <small>Add new</small>
+            </app-button>
           </li>
         </ul>
       </nav>
-      <h2 class="todo__title"> {{ title }}</h2>
+      <h2 class="todo__title"> {{ todo.title }}</h2>
       <div class="todo-wrapper__todos">
         <TodoTask
-            v-for="task in text"
-            :key="task.id"
+            v-for="task in todo.list"
             :task="task"
-            :todoId="id"
+            :currentTodoID="todo.id"
+            :key="task.id"
         />
       </div>
     </div>
@@ -90,17 +107,61 @@
 </template>
 
 <script>
-import TodoTaskCreator from "./TodoTaskCreator";
 import TodoTask from "./TodoTask";
 
 export default {
   name: "TodoItem",
-  props: ['title', 'text', 'id'],
+  props: {
+    todo: {
+      type: Object,
+      default: () => {},
+      required: true
+    },
+    isSave: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    isCancel: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    isChange: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    isDelete: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    isCancelLastChanges: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    isRepeatLastChanges: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    isCreateTask: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    isCreateNew: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
   data() {
     return {}
   },
   components: {
-    TodoTaskCreator,
     TodoTask
   }
 }
@@ -134,6 +195,10 @@ export default {
     align-items: center;
     cursor: pointer;
 
+    &:active {
+      box-shadow: none;
+    }
+
     i {
       font-size: 16px;
     }
@@ -141,7 +206,7 @@ export default {
     small {
       display: block;
       margin: 5px 0 0 0;
-      font-size: 12px;
+      font-size: 8px;
     }
   }
 }

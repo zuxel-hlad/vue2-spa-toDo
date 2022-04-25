@@ -1,11 +1,7 @@
-import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from "../pages/Home";
 import ChangeTodo from '../pages/Change-todo'
 import TodoItem from "../components/TodoItem";
-import TodoCreate from "../components/TodoCreater";
-
-Vue.use(VueRouter)
 
 const routes = [
     {
@@ -14,18 +10,9 @@ const routes = [
         component: Home,
     },
     {
-        path: '/create',
-        component: TodoCreate,
-    },
-    {
-        path: '/change',
+        path: '/change/:todoId',
         component: ChangeTodo,
-        children: [
-            {
-                path: ':todoId?',
-                component: TodoItem,
-            }
-        ]
+        props: true
     }
 ]
 

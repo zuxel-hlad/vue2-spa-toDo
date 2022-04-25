@@ -1,71 +1,102 @@
 <template>
   <div class="container">
-    <AppAlert
-        :settings="alertSettings"
-        ref="deleteAlert"
-        @click="confirmDeleteTodo"
-    />
-    <div v-if="todos.length" class="card todo-wrapper">
+    <div
+        v-if="todos.length"
+        class="card todo-wrapper">
       <div class="todo-wrapper__header">
         <h1 class="home__title">Todo List</h1>
-        <AppButton @click="$router.push({path: '/create'})">Add new</AppButton>
       </div>
       <TodoItem
           v-for="todo in todos"
-          :title="todo.title"
-          :text="todo.list"
-          :key="todo.id"
-          :id="todo.id"
-          @delete="removeTodo"
+          is-change
+          is-delete
+          is-create-new
+          :todo="todo"
+          @delete="setRemovedTodoId(todo.id)"
+          @create-new="createTodoModal = true"
+          @change-todo="$router.push('/change/'+todo.id)"
       />
     </div>
     <div v-else class="card todo-wrapper__empty-todo">
       <h1 class="todo-wrapper__no-todos">No todos yet. Add one ?</h1>
-      <AppButton @click="$router.push('/create')">Create new todo</AppButton>
+      <app-button @click="createTodoModal = true">Create new todo</app-button>
     </div>
+    <basic-modal v-model="createTodoModal">
+      <todo-create-form
+          @create-todo="createNewTodo"
+      />
+    </basic-modal>
+    <basic-modal v-model="confirmModal">
+      <confirm-dialog
+          :dialogSettings="confirmModalSettings"
+          @action="removeTodo"
+      />
+    </basic-modal>
   </div>
 </template>
 
 <script>
 import TodoItem from "./TodoItem";
-import AppAlert from "../components/AppAlert";
-import {mapMutations, mapState} from 'vuex';
+import ConfirmDialog from "./ConfirmDialog";
+import BasicModal from "./BasicModal";
+import TodoCreateForm from "./TodoCreateForm";
+import {mapMutations, mapState, mapActions} from 'vuex';
+import AppButton from "./UI/AppButton";
 
 export default {
   name: "TodoList",
+  components: {
+    AppButton,
+    TodoItem,
+    ConfirmDialog,
+    BasicModal,
+    TodoCreateForm
+  },
   data() {
     return {
-      todoId: null,
-      alertSettings: {}
+      createTodoModal: false,
+      confirmModal: false,
+      removedTodoId: null,
+      confirmModalSettings: {
+        message: 'Delete this todo ?',
+        type: 'danger'
+      }
     }
+  },
+  mounted() {
+    this.getTodos()
   },
   methods: {
 
-    ...mapMutations('todosModule', ['deleteTodo']),
+    ...mapMutations('todosModule', ['deleteTodo', 'createTodo']),
+    ...mapActions('todosModule', ['getTodos']),
 
-    //remove current todo
-    removeTodo(data) {
-      this.alertSettings = {
-        type: 'danger',
-        message: 'Remove this todo?'
+    // add new todo to list of todos
+    createNewTodo(data) {
+      this.createTodo(data)
+      this.createTodoModal = false
+    },
+    //set removed todo id
+    setRemovedTodoId(id) {
+      this.confirmModal = true
+      this.removedTodoId = id
+    },
+    //remove todo on id
+    removeTodo(answer) {
+      if (answer) {
+        this.deleteTodo(this.removedTodoId)
+        this.confirmModal = false
+      } else {
+        this.confirmModal = false
       }
-      this.$refs.deleteAlert.openAlert()
-      this.todoId = data
-    },
+    }
 
-    //confirm remove current todo
-    confirmDeleteTodo() {
-      this.deleteTodo(this.todoId)
-      this.$refs.deleteAlert.hideAlert()
-    },
   },
   computed: {
-    ...mapState('todosModule', ["todos"])
+    ...mapState('todosModule', {
+      todos: state => state.todos,
+    }),
   },
-  components:{
-    TodoItem,
-    AppAlert
-  }
 }
 </script>
 
@@ -83,6 +114,7 @@ export default {
     align-items: center;
     justify-content: space-between;
   }
+
   &__title {
     text-align: center;
   }
