@@ -1,9 +1,10 @@
 <template>
   <section class="change">
-    <basic-modal v-model="confirmModal">
+    <basic-modal
+        v-model="confirmModal">
       <confirm-dialog
           :dialogSettings="confirmModalSettings"
-          @action="setAlertActionType"
+          @action="setConfirmModalAction"
       />
     </basic-modal>
     <div class="container">
@@ -18,11 +19,29 @@
             is-cancel-last-changes
             is-repeat-last-changes
             is-create-task
-            @delete="removeTodo(todo.id)"
+            @create-task="createTaskModal = true"
+            @cancel-edit="setCancelEditParams"
+            @delete="setRemoveTodoParams"
+            @save="saveChanges"
         />
       </div>
       <h2 v-else>loading . . .</h2>
     </div>
+    <basic-modal
+        v-model="confirmModal">
+      <confirm-dialog
+          :dialogSettings="confirmModalSettings"
+          @action="setConfirmModalAction"
+      />
+    </basic-modal>
+    <basic-modal v-model="createTaskModal">
+      <createTaskForm
+          @create-new-task="addNewTask"/>
+    </basic-modal>
+    <basic-modal v-model="infoModal">
+         <info-dialog
+             :settings="infoModalSettings"/>
+    </basic-modal>
   </section>
 </template>
 
@@ -30,10 +49,19 @@
 import TodoItem from '../components/TodoItem';
 import ConfirmDialog from '../components/ConfirmDialog';
 import BasicModal from '../components/BasicModal';
+import createTaskForm from "../components/createTaskForm";
+import InfoDialog from "../components/InfoDialog";
 import {mapState, mapMutations, mapActions} from 'vuex';
 
 export default {
   name: 'Change-todo',
+  components: {
+    TodoItem,
+    ConfirmDialog,
+    BasicModal,
+    createTaskForm,
+    InfoDialog
+  },
   props: {
     todoId: {
       type: String,
@@ -42,25 +70,26 @@ export default {
       required: true,
     },
   },
-  components: {
-    TodoItem,
-    ConfirmDialog,
-    BasicModal,
-  },
   data() {
     return {
       confirmModalSettings: {
         message: '',
         type: 'danger',
       },
+      infoModal: false,
+      infoModalSettings: {
+        title:'Success!',
+        subtitle: 'Changes was saved!',
+        type: 'primary'
+      },
+      createTaskModal: false,
       confirmModal: false,
-      actionType: '',
+      confirmModalActionType: ''
     };
   },
   computed: {
     ...mapState('todosModule', {
       todos: (state) => state.todos,
-      loader: (state) => state.loader,
     }),
     todo() {
       return this.todos.find((item) => item.id === this.todoId);
@@ -76,54 +105,52 @@ export default {
       'saveTodoChanges',
       'cancelLastChange',
       'repeatLastChanges',
+      'addTodoTask'
     ]),
     ...mapActions('todosModule', ['getTodos']),
-    resetAlertSettings() {
-      this.alertSettings = {};
-      this.actionType = '';
-    },
-    openRemoveAlert() {
-      this.alertSettings = {
-        type: 'danger',
-        message: 'Remove this todo?',
-      };
-      this.actionType = 'removeTodo';
-    },
-    removeTodo(id) {
+    setRemoveTodoParams() {
+      this.confirmModalActionType = 'delete'
       this.confirmModal = true
       this.confirmModalSettings.message = 'Remove this todo ?'
-      // this.deleteTodo(id);
-      // this.$router.push('/');
     },
 
-    openCancelAlert() {
-      this.alertSettings = {
-        type: 'warning',
-        message: 'Cancel todo changing?',
-      };
-      this.actionType = 'cancelChanging';
+    setCancelEditParams() {
+      this.confirmModalActionType = 'cancelChange'
+      this.confirmModalSettings.message = 'Cancel edit ?'
+      this.confirmModal = true
     },
-    cancelChanging() {
-      this.resetAlertSettings();
-      this.$router.push('/home');
-      this.cancelTodoChanging();
+
+    addNewTask(task) {
+      this.addTodoTask({
+        parentId: this.todoId,
+        task
+      })
+      this.createTaskModal = false
     },
+
     saveChanges() {
       this.saveTodoChanges();
-      this.$router.push('/home');
+      this.infoModal = true
     },
-    cancelLastChanges() {
-      this.cancelLastChange();
-    },
-    setAlertActionType() {
-      if (this.actionType === 'removeTodo') {
-        return this.removeTodo();
-      }
 
-      if (this.actionType === 'cancelChanging') {
-        return this.cancelChanging();
-      }
+    cancelLastChanges() {
     },
+
+    setConfirmModalAction(answer) {
+      if (answer && this.confirmModalActionType.indexOf('delete') !== -1) {
+        this.deleteTodo(this.todoId)
+        this.confirmModalActionType = ''
+        this.confirmModal = false
+        this.$router.push('/home')
+      } else if (answer && this.confirmModalActionType.indexOf('cancelChange') !== -1) {
+        this.confirmModalActionType = ''
+        this.confirmModal = false
+        this.$router.push('/home')
+      } else {
+        this.confirmModal = false;
+        return false
+      }
+    }
   },
 };
 </script>

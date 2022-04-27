@@ -108,7 +108,15 @@ h3 {
 }
 
 i.primary {
-    color: #42b983;;
+    color: #42b983;
+}
+
+h1.primary {
+    color: #42b983;
+}
+
+h1.danger {
+    color: #e53935;
 }
 
 .btn.danger {

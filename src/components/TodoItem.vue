@@ -23,7 +23,7 @@
                 customClass="todo-wrapper__list-button"
                 title="cancel-change-todo">
               <i class="fas fa-ban primary"></i>
-              <small>Cancel change</small>
+              <small>Cancel edit</small>
             </app-button>
           </li>
           <li
@@ -80,17 +80,6 @@
               <small>Add task</small>
             </app-button>
           </li>
-          <li
-              v-if="isCreateNew"
-              class="todo-wrapper__list-item">
-            <app-button
-                @click="$emit('create-new')"
-                customClass="todo-wrapper__list-button"
-                title="add-todo-task">
-              <i class="fas fa-plus-circle primary"></i>
-              <small>Add new</small>
-            </app-button>
-          </li>
         </ul>
       </nav>
       <h2 class="todo__title"> {{ todo.title }}</h2>
@@ -100,6 +89,7 @@
             :task="task"
             :currentTodoID="todo.id"
             :key="task.id"
+            @delete-task="$emit('delete-task',task.id)"
         />
       </div>
     </div>
@@ -152,11 +142,6 @@ export default {
       required: false,
       default: false
     },
-    isCreateNew: {
-      type: Boolean,
-      required: false,
-      default: false
-    }
   },
   data() {
     return {}

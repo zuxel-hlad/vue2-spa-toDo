@@ -2,14 +2,19 @@
   <div class="card todo-wrapper__todos-todo">
     <div class="todo-wrapper__todos-content">
       <input
+          v-if="$route.path !== '/'"
           type="checkbox"
           name="mark"
           class="todo-wrapper__checker"
       >
-      <p v-if="!changeTaskFlag" class="todo-wrapper__todo-text">
+      <p
+          v-if="!changeTaskFlag"
+          class="todo-wrapper__todo-text">
         {{ task.message }}
       </p>
-      <p v-else class="todo-wrapper__todo-text">
+      <p
+          v-else
+          class="todo-wrapper__todo-text">
         <input
             type="text"
             class="todo-wrapper__task-change"
@@ -17,23 +22,28 @@
         >
       </p>
     </div>
-    <div class="todo-wrapper__todos-actions" v-if="true">
-      <button v-if="changeTaskFlag" class="todo-wrapper__list-button">
-        <i class="fas fa-save primary"></i>
-      </button>
-      <button class="todo-wrapper__list-button">
-        <i class="fas fa-edit primary" @click="changeTaskToggle"></i>
-      </button>
-      <button class="todo-wrapper__list-button" title="delete-todo">
+    <div
+        v-if="$route.path !== '/'"
+        class="todo-wrapper__todos-actions">
+      <app-button
+          class="todo-wrapper__list-button"
+          title="edit-task-message"
+          @click="changeTaskToggle"
+      >
+        <i class="fas fa-edit primary"></i>
+      </app-button>
+      <app-button
+          class="todo-wrapper__list-button"
+          title="delete-task"
+          @click="$emit('delete-task')">
         <i class="fas fa-trash primary">
         </i>
-      </button>
+      </app-button>
     </div>
   </div>
 </template>
 
 <script>
-import {mapMutations} from "vuex";
 
 export default {
   name: "TodoTask",
@@ -57,10 +67,6 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(
-        'todosModule',
-        ['markTodoTask', 'removeTodoTask', 'changeTodoTaskMessage']
-    ),
     changeTaskToggle() {
       this.changeTaskFlag = true
     },

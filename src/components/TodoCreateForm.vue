@@ -1,6 +1,9 @@
 <template>
   <div class="card todo-create">
-    <form class="form-control todo-create__form" @submit.pr.prevent.keypress.enter="addNewTodo">
+    <form
+        class="form-control todo-create__form"
+        @submit.pr.prevent.keypress.enter="addNewTodo"
+    >
       <label>
         <span class="todo-create__text">Add new todo title</span>
         <input

@@ -32,12 +32,8 @@ export default {
     },
 
     addTodoTask(state, payload) {
-        const currentTodoIdx = state.todos.findIndex(item => item.id === payload.todoId);
-        state.todos[currentTodoIdx].list.push({
-            message: payload.message,
-            isDone: false,
-            id: idGenerator(),
-        })
+        const currentTodoIdx = state.todos.findIndex(item => item.id === payload.parentId);
+        state.todos[currentTodoIdx].list.push(payload.task)
     },
 
     removeTodoTask(state, payload) {

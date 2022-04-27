@@ -5,15 +5,19 @@
         class="card todo-wrapper">
       <div class="todo-wrapper__header">
         <h1 class="home__title">Todo List</h1>
+        <app-button
+            custom-class="todo-wrapper__create-new"
+            @click="createTodoModal = true">
+          <i class="fas fa-plus-circle primary"></i>
+          <span>Create New</span>
+        </app-button>
       </div>
       <TodoItem
           v-for="todo in todos"
           is-change
           is-delete
-          is-create-new
           :todo="todo"
           @delete="setRemovedTodoId(todo.id)"
-          @create-new="createTodoModal = true"
           @change-todo="$router.push('/change/'+todo.id)"
       />
     </div>
@@ -107,6 +111,10 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+
+  &__create-new span {
+    margin-left: 10px;
   }
 
   &__empty-todo {
