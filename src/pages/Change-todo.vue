@@ -1,28 +1,67 @@
 <template>
   <section class="change">
-    <basic-modal
-        v-model="confirmModal">
-      <confirm-dialog
-          :dialogSettings="confirmModalSettings"
-          @action="setConfirmModalAction"
-      />
-    </basic-modal>
     <div class="container">
       <div
           v-if="todo"
           class="card">
+        <nav class="change__nav card">
+          <ul class="change__list">
+            <li class="change__list-item">
+              <app-button
+                  custom-class="change__list-btn"
+                  title="save-changes"
+                  @click="saveChanges">
+                <i class="fas fa-save primary"></i>
+                <span>Save</span>
+              </app-button>
+            </li>
+            <li class="change__list-item">
+              <app-button
+                  custom-class="change__list-btn"
+                  title="cancel-edit"
+                  @click="setCancelEditParams">
+                <i class="fas fa-ban primary"></i>
+                <span>Cancel edit</span>
+              </app-button>
+            </li>
+            <li class="change__list-item">
+              <app-button
+                  custom-class="change__list-btn"
+                  title="delete-todo"
+                  @click="setRemoveTodoParams">
+                <i class="fas fa-trash primary"></i>
+                <span>Delete</span>
+              </app-button>
+            </li>
+            <li class="change__list-item">
+              <app-button
+                  custom-class="change__list-btn"
+                  title="cancel-last-changes">
+                <i class="fas fa-redo primary"></i>
+                <span>Cancel last changes</span>
+              </app-button>
+            </li>
+            <li class="change__list-item">
+              <app-button
+                  custom-class="change__list-btn"
+                  title="repeat-last-changes">
+                <i class="fas fa-reply primary"></i>
+                <span>Repeat last changes</span>
+              </app-button>
+            </li>
+            <li class="change__list-item">
+              <app-button
+                  custom-class="change__list-btn"
+                  title="add-task"
+                  @click="createTaskModal = true">
+                <i class="fas fa-plus-circle primary"></i>
+                <span>Add task</span>
+              </app-button>
+            </li>
+          </ul>
+        </nav>
         <TodoItem
             :todo="todo"
-            is-save
-            is-cancel
-            is-delete
-            is-cancel-last-changes
-            is-repeat-last-changes
-            is-create-task
-            @create-task="createTaskModal = true"
-            @cancel-edit="setCancelEditParams"
-            @delete="setRemoveTodoParams"
-            @save="saveChanges"
         />
       </div>
       <h2 v-else>loading . . .</h2>
@@ -39,8 +78,15 @@
           @create-new-task="addNewTask"/>
     </basic-modal>
     <basic-modal v-model="infoModal">
-         <info-dialog
-             :settings="infoModalSettings"/>
+      <info-dialog
+          :settings="infoModalSettings"/>
+    </basic-modal>
+    <basic-modal
+        v-model="confirmModal">
+      <confirm-dialog
+          :dialogSettings="confirmModalSettings"
+          @action="setConfirmModalAction"
+      />
     </basic-modal>
   </section>
 </template>
@@ -78,7 +124,7 @@ export default {
       },
       infoModal: false,
       infoModalSettings: {
-        title:'Success!',
+        title: 'Success!',
         subtitle: 'Changes was saved!',
         type: 'primary'
       },
@@ -141,11 +187,11 @@ export default {
         this.deleteTodo(this.todoId)
         this.confirmModalActionType = ''
         this.confirmModal = false
-        this.$router.push('/home')
+        this.$router.push('/')
       } else if (answer && this.confirmModalActionType.indexOf('cancelChange') !== -1) {
         this.confirmModalActionType = ''
         this.confirmModal = false
-        this.$router.push('/home')
+        this.$router.push('/')
       } else {
         this.confirmModal = false;
         return false
@@ -161,6 +207,37 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+  }
+
+  &__list {
+    width: 100%;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+
+    &-btn {
+      padding: 0.5rem 1rem;
+      margin: 0;
+      background: transparent;
+      display: flex;
+      text-transform: none;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+
+      i {
+        font-size: 14px;
+      }
+
+      span {
+        display: block;
+        margin: 0 0 0 5px;
+        font-size: 14px;
+        font-weight: 500;
+      }
+    }
   }
 }
 </style>

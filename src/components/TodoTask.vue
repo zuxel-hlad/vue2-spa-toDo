@@ -23,7 +23,7 @@
       </p>
     </div>
     <div
-        v-if="$route.path !== '/'"
+        v-if="$route.path !== '/' || $route.path !== '/home'"
         class="todo-wrapper__todos-actions">
       <app-button
           class="todo-wrapper__list-button"

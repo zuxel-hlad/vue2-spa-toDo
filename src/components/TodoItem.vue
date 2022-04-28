@@ -5,28 +5,6 @@
       <nav class="todo-wrapper__nav">
         <ul class="todo-wrapper__nav-list">
           <li
-              v-if="isSave"
-              class="todo-wrapper__list-item">
-            <app-button
-                @click="$emit('save')"
-                customClass="todo-wrapper__list-button"
-                title="save-todo">
-              <i class="fas fa-save primary"></i>
-              <small>Save</small>
-            </app-button>
-          </li>
-          <li
-              v-if="isCancel"
-              class="todo-wrapper__list-item">
-            <app-button
-                @click="$emit('cancel-edit')"
-                customClass="todo-wrapper__list-button"
-                title="cancel-change-todo">
-              <i class="fas fa-ban primary"></i>
-              <small>Cancel edit</small>
-            </app-button>
-          </li>
-          <li
               v-if="isChange"
               class="todo-wrapper__list-item">
             <app-button
@@ -45,39 +23,6 @@
                 title="delete-todo">
               <i class="fas fa-trash primary"></i>
               <small>Delete</small>
-            </app-button>
-          </li>
-          <li
-              v-if="isCancelLastChanges"
-              class="todo-wrapper__list-item">
-            <app-button
-                @click="$emit('cancel-last-changes')"
-                customClass="todo-wrapper__list-button"
-                title="cancel-last-changes">
-              <i class="fas fa-redo primary"></i>
-              <small>Cancel last changes</small>
-            </app-button>
-          </li>
-          <li
-              v-if="isRepeatLastChanges"
-              class="todo-wrapper__list-item">
-            <app-button
-                @click="$emit('repeat-last-changes')"
-                customClass="todo-wrapper__list-button"
-                title="repeat-last-changes">
-              <i class="fas fa-reply primary"></i>
-              <small>Repeat last changes</small>
-            </app-button>
-          </li>
-          <li
-              v-if="isCreateTask"
-              class="todo-wrapper__list-item">
-            <app-button
-                @click="$emit('create-task')"
-                customClass="todo-wrapper__list-button"
-                title="add-todo-task">
-              <i class="fas fa-plus-circle primary"></i>
-              <small>Add task</small>
             </app-button>
           </li>
         </ul>
@@ -104,18 +49,9 @@ export default {
   props: {
     todo: {
       type: Object,
-      default: () => {},
+      default: () => {
+      },
       required: true
-    },
-    isSave: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    isCancel: {
-      type: Boolean,
-      required: false,
-      default: false
     },
     isChange: {
       type: Boolean,
@@ -123,21 +59,6 @@ export default {
       default: false
     },
     isDelete: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    isCancelLastChanges: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    isRepeatLastChanges: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    isCreateTask: {
       type: Boolean,
       required: false,
       default: false

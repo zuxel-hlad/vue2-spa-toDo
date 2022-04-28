@@ -5,7 +5,7 @@ import TodoItem from "../components/TodoItem";
 
 const routes = [
     {
-        path: '/home/',
+        path: '/home',
         alias: '/',
         component: Home,
     },
