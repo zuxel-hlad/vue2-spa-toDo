@@ -2,30 +2,39 @@
   <div class="card todo-wrapper__todos-todo">
     <div class="todo-wrapper__todos-content">
       <input
-          v-if="$route.path !== '/'"
+          v-if="$route.path !== '/' && changeTaskFlag"
           type="checkbox"
           name="mark"
           class="todo-wrapper__checker"
-      >
+          :checked="task.isDone"
+          @change="$emit('set-is-done')">
       <p
-          v-if="!changeTaskFlag"
-          class="todo-wrapper__todo-text">
+          class="todo-wrapper__todo-text"
+          :class="task.isDone ? 'todo-wrapper__todo-text_is-done': ''">
         {{ task.message }}
       </p>
-      <p
-          v-else
-          class="todo-wrapper__todo-text">
-        <input
-            type="text"
-            class="todo-wrapper__task-change"
-            ref="newMessage"
-        >
-      </p>
+      <!--      <p-->
+      <!--          v-else-->
+      <!--          class="todo-wrapper__todo-text">-->
+      <!--        <input-->
+      <!--            type="text"-->
+      <!--            class="todo-wrapper__task-change"-->
+      <!--            ref="newMessage"-->
+      <!--        >-->
+      <!--      </p>-->
     </div>
     <div
-        v-if="$route.path !== '/' || $route.path !== '/home'"
+        v-if="$route.path !== '/'"
         class="todo-wrapper__todos-actions">
       <app-button
+          v-if="changeTaskFlag"
+          class="todo-wrapper__list-button"
+          title="edit-task-message"
+          @click="changeTaskFlag = false">
+        <i class="fas fa-check primary"></i>
+      </app-button>
+      <app-button
+          v-if="!changeTaskFlag"
           class="todo-wrapper__list-button"
           title="edit-task-message"
           @click="changeTaskToggle"
@@ -54,11 +63,6 @@ export default {
       },
       required: false
     },
-    currentTodoID: {
-      type: String,
-      required: true,
-      default: ''
-    }
   },
   data() {
     return {
@@ -70,18 +74,6 @@ export default {
     changeTaskToggle() {
       this.changeTaskFlag = true
     },
-    changeTaskMessage(messageId) {
-      this.changeTaskFlag = true
-      this.changeTodoTaskMessage({
-        todoId: this.todoId,
-        messageId: messageId,
-        newMessage: this.changeTaskValue
-      })
-      this.changeTaskFlag = false
-    },
-    updateChangeTaskValue(event) {
-      this.changeTaskValue = event.target.value
-    }
   }
 }
 </script>
@@ -108,6 +100,12 @@ export default {
     display: flex;
     justify-content: flex-end;
     align-items: center;
+  }
+
+  &__todo-text {
+    &_is-done {
+      text-decoration: line-through;
+    }
   }
 
   &__checker {

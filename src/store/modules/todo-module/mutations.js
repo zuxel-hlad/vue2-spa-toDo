@@ -1,5 +1,4 @@
 import localStorageService from "@/tools/localStorageService";
-import idGenerator from "@/tools/idGenerator";
 
 const {saveItems, getSavedItems} = localStorageService();
 
@@ -27,8 +26,8 @@ export default {
 
     changeTodoTaskMessage(state, payload) {
         const currentTodoIdx = state.todos.findIndex(item => item.id === payload.todoId);
-        const currenMessage = state.todos[currentTodoIdx].list.find(item => item.id === payload.messageId)
-        currenMessage.message = payload.newMessage
+        const currentMessage = state.todos[currentTodoIdx].list.find(item => item.id === payload.messageId)
+        currentMessage.message = payload.newMessage
     },
 
     addTodoTask(state, payload) {
@@ -38,8 +37,7 @@ export default {
 
     removeTodoTask(state, payload) {
         const currentTodoIdx = state.todos.findIndex(item => item.id === payload.todoId);
-        const currentTodoTaskIdx = state.todos[currentTodoIdx].list.findIndex(item => item.id === payload.taskId)
-        state.todos[currentTodoIdx].list.splice(currentTodoTaskIdx, 1)
+        state.todos[currentTodoIdx].list = state.todos[currentTodoIdx].list.filter(task=> task.id !== payload.taskId)
     },
 
     cancelTodoChanging(state) {

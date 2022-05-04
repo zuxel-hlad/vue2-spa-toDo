@@ -62,6 +62,8 @@
         </nav>
         <TodoItem
             :todo="todo"
+            @delete-task="setRemoveTodoTaskParams"
+            @set-is-done="setTaskIsDone"
         />
       </div>
       <h2 v-else>loading . . .</h2>
@@ -130,7 +132,8 @@ export default {
       },
       createTaskModal: false,
       confirmModal: false,
-      confirmModalActionType: ''
+      confirmModalActionType: '',
+      removedTaskId: '',
     };
   },
   computed: {
@@ -151,13 +154,22 @@ export default {
       'saveTodoChanges',
       'cancelLastChange',
       'repeatLastChanges',
-      'addTodoTask'
+      'addTodoTask',
+      'removeTodoTask',
+      'markTodoTask'
     ]),
     ...mapActions('todosModule', ['getTodos']),
     setRemoveTodoParams() {
       this.confirmModalActionType = 'delete'
       this.confirmModal = true
       this.confirmModalSettings.message = 'Remove this todo ?'
+    },
+
+    setRemoveTodoTaskParams(id) {
+      this.removedTaskId = id;
+      this.confirmModalActionType = 'removeTask'
+      this.confirmModal = true
+      this.confirmModalSettings.message = 'Remove this task ?'
     },
 
     setCancelEditParams() {
@@ -182,12 +194,26 @@ export default {
     cancelLastChanges() {
     },
 
+    setTaskIsDone(id) {
+      this.markTodoTask({
+        todoId: this.todoId,
+        messageId: id
+      })
+    },
+
     setConfirmModalAction(answer) {
       if (answer && this.confirmModalActionType.indexOf('delete') !== -1) {
         this.deleteTodo(this.todoId)
         this.confirmModalActionType = ''
         this.confirmModal = false
         this.$router.push('/')
+      } else if (answer && this.confirmModalActionType.indexOf('removeTask') !== -1) {
+        this.removeTodoTask({
+          todoId: this.todoId,
+          taskId: this.removedTaskId
+        })
+        this.confirmModalActionType = ''
+        this.confirmModal = false
       } else if (answer && this.confirmModalActionType.indexOf('cancelChange') !== -1) {
         this.confirmModalActionType = ''
         this.confirmModal = false
