@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div
-        v-if="todos.length"
+        v-if="todos"
         class="card todo-wrapper">
       <div class="todo-wrapper__header">
         <h1 class="home__title">Todo List</h1>
@@ -19,7 +19,15 @@
           :todo="todo"
           @delete="setRemovedTodoId(todo.id)"
           @change-todo="$router.push('/change/'+todo.id)"
-      />
+      >
+        <template #task v-if="todo">
+          <TodoTask
+              v-for="task in todo.list"
+              :task="task"
+              :key="task.id"
+          />
+        </template>
+      </TodoItem>
     </div>
     <div v-else class="card todo-wrapper__empty-todo">
       <h1 class="todo-wrapper__no-todos">No todos yet. Add one ?</h1>
@@ -41,6 +49,7 @@
 
 <script>
 import TodoItem from "./TodoItem";
+import TodoTask from "./TodoTask";
 import ConfirmDialog from "./ConfirmDialog";
 import BasicModal from "./BasicModal";
 import TodoCreateForm from "./TodoCreateForm";
@@ -54,7 +63,8 @@ export default {
     TodoItem,
     ConfirmDialog,
     BasicModal,
-    TodoCreateForm
+    TodoCreateForm,
+    TodoTask
   },
   data() {
     return {

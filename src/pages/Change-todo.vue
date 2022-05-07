@@ -35,6 +35,7 @@
             </li>
             <li class="change__list-item">
               <app-button
+                  @click="cancelLastChanges"
                   custom-class="change__list-btn"
                   title="cancel-last-changes">
                 <i class="fas fa-redo primary"></i>
@@ -43,6 +44,7 @@
             </li>
             <li class="change__list-item">
               <app-button
+                  @click="repeatChanges"
                   custom-class="change__list-btn"
                   title="repeat-last-changes">
                 <i class="fas fa-reply primary"></i>
@@ -62,9 +64,19 @@
         </nav>
         <TodoItem
             :todo="todo"
-            @delete-task="setRemoveTodoTaskParams"
-            @set-is-done="setTaskIsDone"
-        />
+        >
+          <template #task>
+            <TodoTask
+                v-for="task in todo.list"
+                :task="task"
+                :key="task.id"
+                changeMenu
+                @delete-task="setRemoveTodoTaskParams(task.id)"
+                @set-is-done="setTaskIsDone(task.id)"
+                @change="setNewTaskMessage($event,todo.id,task.id)"
+            />
+          </template>
+        </TodoItem>
       </div>
       <h2 v-else>loading . . .</h2>
     </div>
@@ -99,6 +111,10 @@ import ConfirmDialog from '../components/ConfirmDialog';
 import BasicModal from '../components/BasicModal';
 import createTaskForm from "../components/createTaskForm";
 import InfoDialog from "../components/InfoDialog";
+import TodoTask from "../components/TodoTask";
+import localStorageService from "../tools/localStorageService";
+
+const {saveItems} = localStorageService()
 import {mapState, mapMutations, mapActions} from 'vuex';
 
 export default {
@@ -108,7 +124,8 @@ export default {
     ConfirmDialog,
     BasicModal,
     createTaskForm,
-    InfoDialog
+    InfoDialog,
+    TodoTask
   },
   props: {
     todoId: {
@@ -145,18 +162,23 @@ export default {
     },
   },
   mounted() {
-    this.getTodos();
+    if (this.todos.length) {
+      this.getTodos();
+      saveItems('todosBackup', this.todos)
+    } else {
+      this.$router.push('/')
+    }
   },
   methods: {
     ...mapMutations('todosModule', [
       'deleteTodo',
-      'cancelTodoChanging',
       'saveTodoChanges',
       'cancelLastChange',
       'repeatLastChanges',
       'addTodoTask',
       'removeTodoTask',
-      'markTodoTask'
+      'markTodoTask',
+      'updateTaskMessage'
     ]),
     ...mapActions('todosModule', ['getTodos']),
     setRemoveTodoParams() {
@@ -192,12 +214,25 @@ export default {
     },
 
     cancelLastChanges() {
+      this.cancelLastChange()
+    },
+
+    repeatChanges() {
+      this.repeatLastChanges()
     },
 
     setTaskIsDone(id) {
       this.markTodoTask({
         todoId: this.todoId,
         messageId: id
+      })
+    },
+
+    setNewTaskMessage(eventVal, todoId, taskId) {
+      this.updateTaskMessage({
+        newMessage: eventVal,
+        todoId,
+        taskId
       })
     },
 

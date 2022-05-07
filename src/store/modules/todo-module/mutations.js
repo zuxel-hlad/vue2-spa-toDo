@@ -5,10 +5,11 @@ const {saveItems, getSavedItems} = localStorageService();
 export default {
 
     getTodosFromDB(state) {
-        state.todos = getSavedItems('todoItems')
+        if (getSavedItems('todoItems')) {
+            state.todos = getSavedItems('todoItems')
+        }
     },
     deleteTodo(state, payload) {
-        saveItems('todosBackup', state.todos)
         state.todos = [...state.todos].filter(item => item.id !== payload)
         saveItems('todoItems', state.todos)
     },
@@ -22,26 +23,26 @@ export default {
         const currentTodoIdx = state.todos.findIndex(item => item.id === payload.todoId);
         const currenMessage = state.todos[currentTodoIdx].list.find(item => item.id === payload.messageId)
         currenMessage.isDone = !currenMessage.isDone
+        saveItems('todoItems', state.todos)
     },
 
-    changeTodoTaskMessage(state, payload) {
+    updateTaskMessage(state, payload) {
         const currentTodoIdx = state.todos.findIndex(item => item.id === payload.todoId);
-        const currentMessage = state.todos[currentTodoIdx].list.find(item => item.id === payload.messageId)
-        currentMessage.message = payload.newMessage
+        const task = state.todos[currentTodoIdx].list.find(item => item.id === payload.taskId)
+        task.message = payload.newMessage
+        saveItems('todoItems', state.todos)
     },
 
     addTodoTask(state, payload) {
         const currentTodoIdx = state.todos.findIndex(item => item.id === payload.parentId);
         state.todos[currentTodoIdx].list.push(payload.task)
+        saveItems('todoItems', state.todos)
     },
 
     removeTodoTask(state, payload) {
         const currentTodoIdx = state.todos.findIndex(item => item.id === payload.todoId);
-        state.todos[currentTodoIdx].list = state.todos[currentTodoIdx].list.filter(task=> task.id !== payload.taskId)
-    },
-
-    cancelTodoChanging(state) {
-        state.todos = getSavedItems('todoItems')
+        state.todos[currentTodoIdx].list = state.todos[currentTodoIdx].list.filter(task => task.id !== payload.taskId)
+        saveItems('todoItems', state.todos)
     },
 
     saveTodoChanges(state) {
@@ -49,14 +50,10 @@ export default {
     },
 
     cancelLastChange(state) {
-        state.todos = getSavedItems('todoItems')
+        state.todos = getSavedItems('todosBackup').map(item => item)
     },
 
     repeatLastChanges(state) {
-        const lastItem = JSON.parse(localStorage.getItem('todoBackup'))
-        let currentTodo = state.todos.find(item => item.id === lastItem.id)
-        for (let key in currentTodo) {
-            currentTodo[key] = lastItem[key]
-        }
+        state.todos = getSavedItems('todoItems').map(item => item)
     },
 }

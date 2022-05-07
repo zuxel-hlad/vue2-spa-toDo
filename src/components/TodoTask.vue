@@ -9,22 +9,24 @@
           :checked="task.isDone"
           @change="$emit('set-is-done')">
       <p
+          v-if="!changeTaskFlag"
           class="todo-wrapper__todo-text"
           :class="task.isDone ? 'todo-wrapper__todo-text_is-done': ''">
         {{ task.message }}
       </p>
-      <!--      <p-->
-      <!--          v-else-->
-      <!--          class="todo-wrapper__todo-text">-->
-      <!--        <input-->
-      <!--            type="text"-->
-      <!--            class="todo-wrapper__task-change"-->
-      <!--            ref="newMessage"-->
-      <!--        >-->
-      <!--      </p>-->
+      <p
+          v-else
+          class="todo-wrapper__todo-text">
+        <input
+            type="text"
+            class="todo-wrapper__task-change"
+            @input="$emit('change', $event.target.value)"
+            :placeholder="task.message"
+        >
+      </p>
     </div>
     <div
-        v-if="$route.path !== '/'"
+        v-if="changeMenu"
         class="todo-wrapper__todos-actions">
       <app-button
           v-if="changeTaskFlag"
@@ -63,11 +65,15 @@ export default {
       },
       required: false
     },
+    changeMenu: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
   },
   data() {
     return {
       changeTaskFlag: false,
-      changeTaskValue: ''
     }
   },
   methods: {

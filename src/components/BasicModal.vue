@@ -20,8 +20,8 @@
 <script>
 
 export default {
-  name:'BasicModal',
-  props:{
+  name: 'BasicModal',
+  props: {
     value: {
       type: Boolean,
       default: false,
@@ -68,6 +68,7 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+
     &__close {
       position: absolute;
       z-index: 1;

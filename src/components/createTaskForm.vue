@@ -6,7 +6,7 @@
       <label
           for="task-message"
           class="todo-task-creator__form">
-          Enter task message
+        Enter task message
       </label>
       <input
           v-model="taskMessage"
