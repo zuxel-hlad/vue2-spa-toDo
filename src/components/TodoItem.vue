@@ -1,5 +1,6 @@
 <template>
-  <div class="todo-task-container">
+  <div
+      :class="`todo-task-container ${customClass}`">
     <div
         class="card todo-wrapper__item">
       <nav class="todo-wrapper__nav">
@@ -60,6 +61,11 @@ export default {
       type: Boolean,
       default: false,
       required: false
+    },
+    customClass:{
+      type: String,
+      default: '',
+      required: false
     }
   },
 }
@@ -67,12 +73,11 @@ export default {
 
 <style scoped lang="scss">
 .todo-wrapper {
-
   &__item {
-    margin: 16px auto 16px;
     width: 100%;
     max-width: 700px;
     overflow: hidden;
+    margin: 0 auto 1rem;
   }
 
   &__nav-list {

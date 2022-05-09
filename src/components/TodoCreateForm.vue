@@ -2,8 +2,7 @@
   <div class="card todo-create">
     <form
         class="form-control todo-create__form"
-        @submit.pr.prevent.keypress.enter="addNewTodo"
-    >
+        @submit.pr.prevent.keypress.enter="addNewTodo">
       <label>
         <span class="todo-create__text">Add new todo title</span>
         <input
@@ -30,6 +29,9 @@ export default {
       todoTitle: ''
     }
   },
+  mounted() {
+    this.$refs.createTodoInput.focus()
+  },
   methods: {
     addNewTodo() {
       if (this.todoTitle !== '') {
@@ -42,9 +44,6 @@ export default {
       }
     }
   },
-  mounted() {
-    this.$refs.createTodoInput.focus()
-  }
 }
 </script>
 

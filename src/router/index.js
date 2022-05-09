@@ -1,7 +1,7 @@
 import VueRouter from 'vue-router'
 import Home from "../pages/Home";
 import ChangeTodo from '../pages/Change-todo'
-import TodoItem from "../components/TodoItem";
+import NotFound from "../pages/NotFound";
 
 const routes = [
     {
@@ -13,6 +13,15 @@ const routes = [
         path: '/change/:todoId',
         component: ChangeTodo,
         props: true
+    },
+    {
+        path: '/404',
+        name: '404',
+        component: NotFound,
+    },
+    {
+        path: '*',
+        redirect: '/404'
     }
 ]
 

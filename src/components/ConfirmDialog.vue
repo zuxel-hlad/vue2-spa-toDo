@@ -11,13 +11,13 @@
     <div class="alert__btns">
       <app-button
           :customClass="`${dialogSettings.type} confirm-dialog__btn`"
-          @click="$emit('action', true)"
-      >Yes
+          @click="$emit('action', true)">
+        Yes
       </app-button>
       <app-button
           :customClass="`${dialogSettings.type} confirm-dialog__btn`"
-          @click="$emit('action', false)"
-      >No
+          @click="$emit('action', false)">
+        No
       </app-button>
     </div>
   </div>

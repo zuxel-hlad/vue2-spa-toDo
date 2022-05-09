@@ -5,11 +5,12 @@
       :class="value ? 'overlay_visible' : ''"
       @click.stop="$emit('input', false)"
   >
-    <div class="overlay-wrapper" @click.stop>
+    <div
+        class="overlay-wrapper"
+        @click.stop>
       <button
           class="overlay-wrapper__close"
-          @click="$emit('input', false)"
-      >
+          @click="$emit('input', false)">
         <i class="fas fa-times-circle primary"></i>
       </button>
       <slot></slot>
@@ -68,6 +69,10 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+
+    @media screen and (max-width: 768px){
+      top: 25%;
+    }
 
     &__close {
       position: absolute;

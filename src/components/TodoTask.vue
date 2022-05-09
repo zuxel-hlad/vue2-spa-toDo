@@ -2,7 +2,7 @@
   <div class="card todo-wrapper__todos-todo">
     <div class="todo-wrapper__todos-content">
       <input
-          v-if="$route.path !== '/' && changeTaskFlag"
+          v-if="changeMenu && changeTaskFlag"
           type="checkbox"
           name="mark"
           class="todo-wrapper__checker"
@@ -20,8 +20,8 @@
         <input
             type="text"
             class="todo-wrapper__task-change"
-            @input="$emit('change', $event.target.value)"
             :placeholder="task.message"
+            @input="$emit('change', $event.target.value)"
         >
       </p>
     </div>

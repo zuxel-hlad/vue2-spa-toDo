@@ -1,9 +1,13 @@
 <template>
   <div class="info-dialog">
-    <h1 :class="`info-dialog__title ${settings.type}`">{{ settings.title || 'Message is not defined' }}</h1>
+    <h1
+        :class="`info-dialog__title ${settings.type}`">
+      {{ settings.title || 'Message is not defined' }}
+    </h1>
     <h2
         v-if="settings.subtitle"
-        class="info-dialog__subtitle">{{ settings.subtitle }}</h2>
+        class="info-dialog__subtitle">{{ settings.subtitle }}
+    </h2>
   </div>
 </template>
 

@@ -3,7 +3,7 @@
     <div
         v-if="todos"
         class="card todo-wrapper">
-      <div class="todo-wrapper__header">
+      <header class="todo-wrapper__header">
         <h1 class="home__title">Todo List</h1>
         <app-button
             custom-class="todo-wrapper__create-new"
@@ -11,7 +11,7 @@
           <i class="fas fa-plus-circle primary"></i>
           <span>Create New</span>
         </app-button>
-      </div>
+      </header>
       <TodoItem
           v-for="todo in todos"
           is-change
@@ -31,7 +31,10 @@
     </div>
     <div v-else class="card todo-wrapper__empty-todo">
       <h1 class="todo-wrapper__no-todos">No todos yet. Add one ?</h1>
-      <app-button @click="createTodoModal = true">Create new todo</app-button>
+      <app-button
+          @click="createTodoModal = true">
+        Create new todo
+      </app-button>
     </div>
     <basic-modal v-model="createTodoModal">
       <todo-create-form
@@ -77,6 +80,11 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState('todosModule', {
+      todos: state => state.todos,
+    }),
+  },
   mounted() {
     this.getTodos()
   },
@@ -104,12 +112,6 @@ export default {
         this.confirmModal = false
       }
     }
-
-  },
-  computed: {
-    ...mapState('todosModule', {
-      todos: state => state.todos,
-    }),
   },
 }
 </script>
@@ -121,6 +123,8 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
+    margin: 0 0 16px 0;
   }
 
   &__create-new span {
