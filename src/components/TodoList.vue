@@ -17,6 +17,7 @@
           is-change
           is-delete
           :todo="todo"
+          :key="todo.id"
           @delete="setRemovedTodoId(todo.id)"
           @change-todo="$router.push('/change/'+todo.id)"
       >
